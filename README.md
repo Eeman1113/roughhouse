@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# roughhouse
 
-## Getting Started
+A top-down floor-plan editor built with Next.js and a custom HTML5-canvas engine.
+Draw walls, punch in doors and windows, drop stairs and 300+ furniture symbols, and
+export your plan as PNG or JSON.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev      # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires Node 20+.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Walls** — click-to-chain wall drawing with grid/endpoint/angle snapping, drag
+  endpoints to extend or reshape (connected corners move together), per-wall thickness,
+  live length labels. Rectangle-room tool for quick rooms.
+- **Openings** — single / double / sliding doors, plain doorways and windows. They cut
+  the wall automatically, render proper swing arcs, slide along their wall, and can flip
+  side/hinge.
+- **Stairs** — straight (width/length/steps) and spiral, with tread lines and direction
+  arrows.
+- **Furniture library** — 300+ top-view symbols across Seating, Beds, Tables, Storage,
+  Kitchen, Bathroom, Office, Outdoor, Garden, Decor, Games and a full set of Indian
+  household items (charpai, jhoola, pooja mandir, matka, sil batta, desert cooler…).
+  Searchable, categorized, with sprite previews.
+- **Editing** — select/move, drag-rotate handle, quick-rotate buttons, resize from the
+  properties panel, duplicate, undo/redo, autosave to localStorage.
+- **Export** — PNG (print-style black on white) and JSON save/load.
 
-## Learn More
+## Shortcuts
 
-To learn more about Next.js, take a look at the following resources:
+| Key | Action |
+| --- | --- |
+| V / W / B | Select / Wall / Room tool |
+| D / N / S | Door / Window / Stairs tool |
+| R | Rotate selection 15° (Shift+R reverses) |
+| F | Flip door swing |
+| ⌘Z / ⌘⇧Z | Undo / Redo |
+| ⌘D | Duplicate |
+| Del | Delete selection |
+| G | Toggle grid |
+| Scroll / Space+drag | Zoom / Pan |
+| Esc, Enter, double-click | End wall run |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Sprite pipeline
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Furniture sprites are AI-generated line-art sheets (4x4 grids) that get sliced into
+individual transparent PNGs and tinted at runtime to match the theme.
 
-## Deploy on Vercel
+```bash
+# 1. catalog-def.mjs defines every sheet + item (id, label, category, size, prompt text)
+node scripts/catalog-def.mjs        # prints the generation prompt for each sheet
+# 2. drop generated sheets into assets-src/<sheet>.png, then:
+npm run sprites:slice               # slices into public/sprites/<id>.png
+npm run catalog:build               # regenerates lib/catalog.json for the app
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Scene data model (`lib/types.ts`): walls are segments with thickness; openings live on a
+wall at a parametric position; stairs and items are rotatable rects. Everything is in
+centimeters.

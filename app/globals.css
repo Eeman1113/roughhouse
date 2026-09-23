@@ -1,26 +1,217 @@
 @import "tailwindcss";
 
+/* ---------- design tokens ---------- */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg: #101013;
+  --glass: rgba(28, 28, 32, 0.72);
+  --glass-sm: rgba(34, 34, 40, 0.6);
+  --edge: rgba(255, 255, 255, 0.08);
+  --edge-bright: rgba(255, 255, 255, 0.16);
+  --text: rgba(245, 245, 247, 0.92);
+  --text-2: rgba(235, 235, 245, 0.6);
+  --text-3: rgba(235, 235, 245, 0.35);
+  --tint: #0a84ff;
+  --tint-soft: rgba(10, 132, 255, 0.22);
+  --danger: #ff453a;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    100%/1.5 -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display",
+    "SF Pro", system-ui, "Segoe UI", sans-serif;
+  font-optical-sizing: auto;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+button {
+  -webkit-tap-highlight-color: transparent;
+  font: inherit;
+}
+
+/* ---------- materials ---------- */
+.glass {
+  background: var(--glass);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid var(--edge);
+  border-top-color: var(--edge-bright); /* light catching the top edge */
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.45),
+    0 1px 0 rgba(255, 255, 255, 0.04) inset;
+}
+
+.glass-chip {
+  background: var(--glass-sm);
+  -webkit-backdrop-filter: blur(14px) saturate(160%);
+  backdrop-filter: blur(14px) saturate(160%);
+  border: 1px solid var(--edge);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* ---------- instant press feedback (on pointer-down, not release) ---------- */
+.press {
+  transition:
+    transform 140ms cubic-bezier(0.2, 0, 0, 1),
+    background-color 140ms ease,
+    color 140ms ease;
+}
+.press:active {
+  transform: scale(0.96);
+  transition-duration: 40ms;
+}
+
+/* ---------- scroll edge fades instead of hard dividers ---------- */
+.fade-scroll {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 20px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    black 20px,
+    black calc(100% - 24px),
+    transparent 100%
+  );
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 5px;
+  border: 3px solid transparent;
+  background-clip: content-box;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ---------- materialize: surfaces arrive as material (blur + scale + fade) ---------- */
+.materialize {
+  animation: materialize 340ms cubic-bezier(0.25, 1, 0.3, 1);
+  transform-origin: right center;
+}
+@keyframes materialize {
+  from {
+    opacity: 0;
+    transform: translateX(10px) scale(0.985);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ---------- accessibility signals ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .press,
+  .press:active {
+    transform: none;
+  }
+  .materialize {
+    animation: fade-only 180ms ease;
+  }
+  @keyframes fade-only {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass,
+  .glass-chip {
+    background: #19191d;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (prefers-contrast: more) {
+  .glass,
+  .glass-chip {
+    background: #141417;
+    border-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+/* number inputs: no native spinner — it fights the glass aesthetic */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
+/* ---------- chrome entrance: surfaces materialize once on load ---------- */
+.enter-top {
+  animation: enter-top 440ms cubic-bezier(0.25, 1, 0.3, 1) backwards;
+}
+@keyframes enter-top {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -10px) scale(0.985);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    filter: none;
+  }
+}
+.enter-left {
+  animation: enter-left 440ms cubic-bezier(0.25, 1, 0.3, 1) 60ms backwards;
+}
+@keyframes enter-left {
+  from {
+    opacity: 0;
+    transform: translateX(-12px) scale(0.99);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+.enter-bottom {
+  animation: enter-bottom 440ms cubic-bezier(0.25, 1, 0.3, 1) 120ms backwards;
+}
+@keyframes enter-bottom {
+  from {
+    opacity: 0;
+    transform: translate(-50%, 10px) scale(0.985);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+    filter: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .enter-top,
+  .enter-left,
+  .enter-bottom {
+    animation: fade-only 180ms ease backwards;
+  }
 }

@@ -1,0 +1,2207 @@
+[
+  {
+    "id": "bed-single",
+    "label": "Bed (single)",
+    "cat": "Beds",
+    "w": 90,
+    "h": 200
+  },
+  {
+    "id": "bed-double",
+    "label": "Bed (double)",
+    "cat": "Beds",
+    "w": 160,
+    "h": 200
+  },
+  {
+    "id": "sofa",
+    "label": "Sofa",
+    "cat": "Seating",
+    "w": 210,
+    "h": 90
+  },
+  {
+    "id": "armchair",
+    "label": "Armchair",
+    "cat": "Seating",
+    "w": 90,
+    "h": 78
+  },
+  {
+    "id": "table-rect",
+    "label": "Table",
+    "cat": "Tables",
+    "w": 160,
+    "h": 90
+  },
+  {
+    "id": "table-round",
+    "label": "Round table",
+    "cat": "Tables",
+    "w": 110,
+    "h": 110
+  },
+  {
+    "id": "chair",
+    "label": "Chair",
+    "cat": "Seating",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "desk",
+    "label": "Desk",
+    "cat": "Tables",
+    "w": 140,
+    "h": 70
+  },
+  {
+    "id": "wardrobe",
+    "label": "Wardrobe",
+    "cat": "Storage",
+    "w": 120,
+    "h": 60
+  },
+  {
+    "id": "counter",
+    "label": "Counter",
+    "cat": "Kitchen",
+    "w": 120,
+    "h": 45
+  },
+  {
+    "id": "stove",
+    "label": "Stove",
+    "cat": "Kitchen",
+    "w": 60,
+    "h": 58
+  },
+  {
+    "id": "fridge",
+    "label": "Fridge",
+    "cat": "Kitchen",
+    "w": 70,
+    "h": 62
+  },
+  {
+    "id": "kitchen-sink",
+    "label": "Kitchen sink",
+    "cat": "Kitchen",
+    "w": 80,
+    "h": 52
+  },
+  {
+    "id": "toilet",
+    "label": "Toilet",
+    "cat": "Bathroom",
+    "w": 42,
+    "h": 66
+  },
+  {
+    "id": "sink",
+    "label": "Basin",
+    "cat": "Bathroom",
+    "w": 50,
+    "h": 42
+  },
+  {
+    "id": "bathtub",
+    "label": "Bathtub",
+    "cat": "Bathroom",
+    "w": 170,
+    "h": 80
+  },
+  {
+    "id": "shower",
+    "label": "Shower",
+    "cat": "Bathroom",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "plant",
+    "label": "Plant",
+    "cat": "Garden",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "loveseat",
+    "label": "Loveseat",
+    "cat": "Seating",
+    "w": 150,
+    "h": 90
+  },
+  {
+    "id": "sofa-l",
+    "label": "Corner sofa",
+    "cat": "Seating",
+    "w": 250,
+    "h": 200
+  },
+  {
+    "id": "chaise",
+    "label": "Chaise lounge",
+    "cat": "Seating",
+    "w": 170,
+    "h": 70
+  },
+  {
+    "id": "recliner",
+    "label": "Recliner",
+    "cat": "Seating",
+    "w": 90,
+    "h": 95
+  },
+  {
+    "id": "rocking-chair",
+    "label": "Rocking chair",
+    "cat": "Seating",
+    "w": 60,
+    "h": 90
+  },
+  {
+    "id": "bench",
+    "label": "Bench",
+    "cat": "Seating",
+    "w": 140,
+    "h": 40
+  },
+  {
+    "id": "stool",
+    "label": "Stool",
+    "cat": "Seating",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "bar-stool",
+    "label": "Bar stool",
+    "cat": "Seating",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "office-chair",
+    "label": "Office chair",
+    "cat": "Seating",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "beanbag",
+    "label": "Bean bag",
+    "cat": "Seating",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "ottoman",
+    "label": "Ottoman",
+    "cat": "Seating",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "pouf",
+    "label": "Pouf",
+    "cat": "Seating",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "egg-chair",
+    "label": "Egg chair",
+    "cat": "Seating",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "folding-chair",
+    "label": "Folding chair",
+    "cat": "Seating",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "sofa-chaise",
+    "label": "Sofa w/ chaise",
+    "cat": "Seating",
+    "w": 250,
+    "h": 160
+  },
+  {
+    "id": "papasan",
+    "label": "Papasan chair",
+    "cat": "Seating",
+    "w": 100,
+    "h": 100
+  },
+  {
+    "id": "king-bed",
+    "label": "King bed",
+    "cat": "Beds",
+    "w": 190,
+    "h": 210
+  },
+  {
+    "id": "bunk-bed",
+    "label": "Bunk bed",
+    "cat": "Beds",
+    "w": 95,
+    "h": 200
+  },
+  {
+    "id": "crib",
+    "label": "Crib",
+    "cat": "Beds",
+    "w": 70,
+    "h": 130
+  },
+  {
+    "id": "daybed",
+    "label": "Day bed",
+    "cat": "Beds",
+    "w": 95,
+    "h": 190
+  },
+  {
+    "id": "futon",
+    "label": "Futon",
+    "cat": "Beds",
+    "w": 140,
+    "h": 190
+  },
+  {
+    "id": "kids-bed",
+    "label": "Kids bed",
+    "cat": "Beds",
+    "w": 80,
+    "h": 160
+  },
+  {
+    "id": "round-bed",
+    "label": "Round bed",
+    "cat": "Beds",
+    "w": 220,
+    "h": 220
+  },
+  {
+    "id": "sofa-bed",
+    "label": "Sofa bed",
+    "cat": "Beds",
+    "w": 160,
+    "h": 200
+  },
+  {
+    "id": "cot",
+    "label": "Cot",
+    "cat": "Beds",
+    "w": 65,
+    "h": 190
+  },
+  {
+    "id": "canopy-bed",
+    "label": "Canopy bed",
+    "cat": "Beds",
+    "w": 190,
+    "h": 215
+  },
+  {
+    "id": "cradle",
+    "label": "Cradle",
+    "cat": "Beds",
+    "w": 55,
+    "h": 95
+  },
+  {
+    "id": "toddler-bed",
+    "label": "Toddler bed",
+    "cat": "Beds",
+    "w": 70,
+    "h": 140
+  },
+  {
+    "id": "platform-bed",
+    "label": "Platform bed",
+    "cat": "Beds",
+    "w": 200,
+    "h": 230
+  },
+  {
+    "id": "hospital-bed",
+    "label": "Hospital bed",
+    "cat": "Beds",
+    "w": 95,
+    "h": 210
+  },
+  {
+    "id": "murphy-bed",
+    "label": "Murphy bed",
+    "cat": "Beds",
+    "w": 160,
+    "h": 210
+  },
+  {
+    "id": "hammock-stand",
+    "label": "Hammock (stand)",
+    "cat": "Beds",
+    "w": 130,
+    "h": 300
+  },
+  {
+    "id": "coffee-table",
+    "label": "Coffee table",
+    "cat": "Tables",
+    "w": 110,
+    "h": 60
+  },
+  {
+    "id": "coffee-table-round",
+    "label": "Round coffee table",
+    "cat": "Tables",
+    "w": 80,
+    "h": 80
+  },
+  {
+    "id": "oval-table",
+    "label": "Oval table",
+    "cat": "Tables",
+    "w": 180,
+    "h": 110
+  },
+  {
+    "id": "square-table-4",
+    "label": "Table + 4 chairs",
+    "cat": "Tables",
+    "w": 170,
+    "h": 170
+  },
+  {
+    "id": "round-table-4",
+    "label": "Round table + 4",
+    "cat": "Tables",
+    "w": 180,
+    "h": 180
+  },
+  {
+    "id": "table-8",
+    "label": "Table + 8 chairs",
+    "cat": "Tables",
+    "w": 280,
+    "h": 150
+  },
+  {
+    "id": "side-table",
+    "label": "Side table",
+    "cat": "Tables",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "console-table",
+    "label": "Console table",
+    "cat": "Tables",
+    "w": 120,
+    "h": 35
+  },
+  {
+    "id": "bar-table",
+    "label": "Bar table",
+    "cat": "Tables",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "l-desk",
+    "label": "L-shaped desk",
+    "cat": "Tables",
+    "w": 160,
+    "h": 160
+  },
+  {
+    "id": "standing-desk",
+    "label": "Standing desk",
+    "cat": "Tables",
+    "w": 140,
+    "h": 70
+  },
+  {
+    "id": "drafting-table",
+    "label": "Drafting table",
+    "cat": "Tables",
+    "w": 120,
+    "h": 80
+  },
+  {
+    "id": "nightstand",
+    "label": "Nightstand",
+    "cat": "Tables",
+    "w": 45,
+    "h": 40
+  },
+  {
+    "id": "picnic-table",
+    "label": "Picnic table",
+    "cat": "Tables",
+    "w": 180,
+    "h": 150
+  },
+  {
+    "id": "poker-table",
+    "label": "Poker table",
+    "cat": "Tables",
+    "w": 130,
+    "h": 130
+  },
+  {
+    "id": "vanity-table",
+    "label": "Vanity table",
+    "cat": "Tables",
+    "w": 110,
+    "h": 45
+  },
+  {
+    "id": "bookshelf",
+    "label": "Bookshelf",
+    "cat": "Storage",
+    "w": 90,
+    "h": 30
+  },
+  {
+    "id": "bookcase-wide",
+    "label": "Wide bookcase",
+    "cat": "Storage",
+    "w": 160,
+    "h": 35
+  },
+  {
+    "id": "tv-stand",
+    "label": "TV stand",
+    "cat": "Storage",
+    "w": 160,
+    "h": 45
+  },
+  {
+    "id": "dresser",
+    "label": "Dresser",
+    "cat": "Storage",
+    "w": 120,
+    "h": 50
+  },
+  {
+    "id": "drawers",
+    "label": "Chest of drawers",
+    "cat": "Storage",
+    "w": 80,
+    "h": 45
+  },
+  {
+    "id": "filing-cabinet",
+    "label": "Filing cabinet",
+    "cat": "Storage",
+    "w": 45,
+    "h": 60
+  },
+  {
+    "id": "shoe-rack",
+    "label": "Shoe rack",
+    "cat": "Storage",
+    "w": 80,
+    "h": 30
+  },
+  {
+    "id": "coat-rack",
+    "label": "Coat stand",
+    "cat": "Storage",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "sideboard",
+    "label": "Sideboard",
+    "cat": "Storage",
+    "w": 160,
+    "h": 45
+  },
+  {
+    "id": "china-cabinet",
+    "label": "China cabinet",
+    "cat": "Storage",
+    "w": 110,
+    "h": 45
+  },
+  {
+    "id": "safe",
+    "label": "Safe",
+    "cat": "Storage",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "toy-chest",
+    "label": "Toy chest",
+    "cat": "Storage",
+    "w": 80,
+    "h": 45
+  },
+  {
+    "id": "laundry-basket",
+    "label": "Laundry basket",
+    "cat": "Storage",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "shelving-unit",
+    "label": "Shelving unit",
+    "cat": "Storage",
+    "w": 120,
+    "h": 40
+  },
+  {
+    "id": "display-cabinet",
+    "label": "Display cabinet",
+    "cat": "Storage",
+    "w": 100,
+    "h": 40
+  },
+  {
+    "id": "wine-rack",
+    "label": "Wine rack",
+    "cat": "Storage",
+    "w": 60,
+    "h": 30
+  },
+  {
+    "id": "dishwasher",
+    "label": "Dishwasher",
+    "cat": "Kitchen",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "washing-machine",
+    "label": "Washing machine",
+    "cat": "Kitchen",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "dryer",
+    "label": "Dryer",
+    "cat": "Kitchen",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "microwave",
+    "label": "Microwave",
+    "cat": "Kitchen",
+    "w": 50,
+    "h": 35
+  },
+  {
+    "id": "double-oven",
+    "label": "Double oven",
+    "cat": "Kitchen",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "chest-freezer",
+    "label": "Chest freezer",
+    "cat": "Kitchen",
+    "w": 110,
+    "h": 60
+  },
+  {
+    "id": "mini-fridge",
+    "label": "Mini fridge",
+    "cat": "Kitchen",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "kitchen-island",
+    "label": "Kitchen island",
+    "cat": "Kitchen",
+    "w": 180,
+    "h": 90
+  },
+  {
+    "id": "counter-l",
+    "label": "L-counter",
+    "cat": "Kitchen",
+    "w": 240,
+    "h": 240
+  },
+  {
+    "id": "double-sink",
+    "label": "Double sink",
+    "cat": "Kitchen",
+    "w": 100,
+    "h": 55
+  },
+  {
+    "id": "trash-bin",
+    "label": "Trash bin",
+    "cat": "Kitchen",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "pantry",
+    "label": "Pantry cabinet",
+    "cat": "Kitchen",
+    "w": 90,
+    "h": 50
+  },
+  {
+    "id": "breakfast-bar",
+    "label": "Breakfast bar",
+    "cat": "Kitchen",
+    "w": 180,
+    "h": 50
+  },
+  {
+    "id": "stove-6",
+    "label": "6-burner range",
+    "cat": "Kitchen",
+    "w": 90,
+    "h": 60
+  },
+  {
+    "id": "prep-table",
+    "label": "Prep table",
+    "cat": "Kitchen",
+    "w": 120,
+    "h": 60
+  },
+  {
+    "id": "kitchen-cart",
+    "label": "Kitchen cart",
+    "cat": "Kitchen",
+    "w": 70,
+    "h": 45
+  },
+  {
+    "id": "corner-tub",
+    "label": "Corner bathtub",
+    "cat": "Bathroom",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "oval-tub",
+    "label": "Freestanding tub",
+    "cat": "Bathroom",
+    "w": 170,
+    "h": 80
+  },
+  {
+    "id": "jacuzzi",
+    "label": "Jacuzzi",
+    "cat": "Bathroom",
+    "w": 200,
+    "h": 200
+  },
+  {
+    "id": "double-vanity",
+    "label": "Double vanity",
+    "cat": "Bathroom",
+    "w": 150,
+    "h": 55
+  },
+  {
+    "id": "single-vanity",
+    "label": "Single vanity",
+    "cat": "Bathroom",
+    "w": 75,
+    "h": 55
+  },
+  {
+    "id": "bidet",
+    "label": "Bidet",
+    "cat": "Bathroom",
+    "w": 40,
+    "h": 60
+  },
+  {
+    "id": "urinal",
+    "label": "Urinal",
+    "cat": "Bathroom",
+    "w": 40,
+    "h": 35
+  },
+  {
+    "id": "corner-shower",
+    "label": "Corner shower",
+    "cat": "Bathroom",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "walk-in-shower",
+    "label": "Walk-in shower",
+    "cat": "Bathroom",
+    "w": 140,
+    "h": 90
+  },
+  {
+    "id": "laundry-sink",
+    "label": "Utility sink",
+    "cat": "Bathroom",
+    "w": 55,
+    "h": 50
+  },
+  {
+    "id": "pedestal-sink",
+    "label": "Pedestal sink",
+    "cat": "Bathroom",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "towel-cabinet",
+    "label": "Towel cabinet",
+    "cat": "Bathroom",
+    "w": 50,
+    "h": 35
+  },
+  {
+    "id": "clawfoot-tub",
+    "label": "Clawfoot tub",
+    "cat": "Bathroom",
+    "w": 160,
+    "h": 75
+  },
+  {
+    "id": "double-shower",
+    "label": "Double shower",
+    "cat": "Bathroom",
+    "w": 160,
+    "h": 90
+  },
+  {
+    "id": "changing-table",
+    "label": "Changing table",
+    "cat": "Bathroom",
+    "w": 90,
+    "h": 50
+  },
+  {
+    "id": "accessible-toilet",
+    "label": "Accessible toilet",
+    "cat": "Bathroom",
+    "w": 50,
+    "h": 70
+  },
+  {
+    "id": "piano-grand",
+    "label": "Grand piano",
+    "cat": "Music & Fitness",
+    "w": 150,
+    "h": 160
+  },
+  {
+    "id": "piano-upright",
+    "label": "Upright piano",
+    "cat": "Music & Fitness",
+    "w": 150,
+    "h": 60
+  },
+  {
+    "id": "treadmill",
+    "label": "Treadmill",
+    "cat": "Music & Fitness",
+    "w": 80,
+    "h": 180
+  },
+  {
+    "id": "exercise-bike",
+    "label": "Exercise bike",
+    "cat": "Music & Fitness",
+    "w": 60,
+    "h": 110
+  },
+  {
+    "id": "rowing-machine",
+    "label": "Rowing machine",
+    "cat": "Music & Fitness",
+    "w": 60,
+    "h": 210
+  },
+  {
+    "id": "weight-bench",
+    "label": "Weight bench",
+    "cat": "Music & Fitness",
+    "w": 60,
+    "h": 130
+  },
+  {
+    "id": "squat-rack",
+    "label": "Squat rack",
+    "cat": "Music & Fitness",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "yoga-mat",
+    "label": "Yoga mat",
+    "cat": "Music & Fitness",
+    "w": 60,
+    "h": 180
+  },
+  {
+    "id": "elliptical",
+    "label": "Elliptical",
+    "cat": "Music & Fitness",
+    "w": 70,
+    "h": 160
+  },
+  {
+    "id": "fireplace",
+    "label": "Fireplace",
+    "cat": "Music & Fitness",
+    "w": 120,
+    "h": 40
+  },
+  {
+    "id": "radiator",
+    "label": "Radiator",
+    "cat": "Music & Fitness",
+    "w": 100,
+    "h": 25
+  },
+  {
+    "id": "massage-table",
+    "label": "Massage table",
+    "cat": "Music & Fitness",
+    "w": 70,
+    "h": 190
+  },
+  {
+    "id": "dumbbell-rack",
+    "label": "Dumbbell rack",
+    "cat": "Music & Fitness",
+    "w": 110,
+    "h": 40
+  },
+  {
+    "id": "gaming-desk",
+    "label": "Gaming setup",
+    "cat": "Music & Fitness",
+    "w": 160,
+    "h": 80
+  },
+  {
+    "id": "drum-kit",
+    "label": "Drum kit",
+    "cat": "Music & Fitness",
+    "w": 150,
+    "h": 130
+  },
+  {
+    "id": "keyboard-stand",
+    "label": "Keyboard",
+    "cat": "Music & Fitness",
+    "w": 140,
+    "h": 40
+  },
+  {
+    "id": "conference-table",
+    "label": "Conference table",
+    "cat": "Office",
+    "w": 300,
+    "h": 160
+  },
+  {
+    "id": "reception-desk",
+    "label": "Reception desk",
+    "cat": "Office",
+    "w": 200,
+    "h": 100
+  },
+  {
+    "id": "cubicle",
+    "label": "Cubicle",
+    "cat": "Office",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "whiteboard",
+    "label": "Whiteboard",
+    "cat": "Office",
+    "w": 120,
+    "h": 40
+  },
+  {
+    "id": "printer-stand",
+    "label": "Printer",
+    "cat": "Office",
+    "w": 60,
+    "h": 50
+  },
+  {
+    "id": "server-rack",
+    "label": "Server rack",
+    "cat": "Office",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "lockers",
+    "label": "Lockers",
+    "cat": "Office",
+    "w": 120,
+    "h": 45
+  },
+  {
+    "id": "water-cooler",
+    "label": "Water cooler",
+    "cat": "Office",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "photocopier",
+    "label": "Photocopier",
+    "cat": "Office",
+    "w": 70,
+    "h": 60
+  },
+  {
+    "id": "podium",
+    "label": "Podium",
+    "cat": "Office",
+    "w": 50,
+    "h": 45
+  },
+  {
+    "id": "meeting-table",
+    "label": "Meeting table",
+    "cat": "Office",
+    "w": 160,
+    "h": 160
+  },
+  {
+    "id": "phone-booth",
+    "label": "Phone booth",
+    "cat": "Office",
+    "w": 100,
+    "h": 100
+  },
+  {
+    "id": "file-shelf",
+    "label": "File shelving",
+    "cat": "Office",
+    "w": 120,
+    "h": 40
+  },
+  {
+    "id": "lounge-set",
+    "label": "Lounge set",
+    "cat": "Office",
+    "w": 200,
+    "h": 100
+  },
+  {
+    "id": "double-workstation",
+    "label": "Double workstation",
+    "cat": "Office",
+    "w": 160,
+    "h": 120
+  },
+  {
+    "id": "kiosk",
+    "label": "Kiosk",
+    "cat": "Office",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "patio-set",
+    "label": "Patio set",
+    "cat": "Outdoor",
+    "w": 180,
+    "h": 180
+  },
+  {
+    "id": "sun-lounger",
+    "label": "Sun lounger",
+    "cat": "Outdoor",
+    "w": 60,
+    "h": 190
+  },
+  {
+    "id": "hammock",
+    "label": "Hammock",
+    "cat": "Outdoor",
+    "w": 120,
+    "h": 300
+  },
+  {
+    "id": "bbq-grill",
+    "label": "BBQ grill",
+    "cat": "Outdoor",
+    "w": 70,
+    "h": 50
+  },
+  {
+    "id": "fire-pit",
+    "label": "Fire pit",
+    "cat": "Outdoor",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "garden-bench",
+    "label": "Garden bench",
+    "cat": "Outdoor",
+    "w": 140,
+    "h": 50
+  },
+  {
+    "id": "swing-set",
+    "label": "Swing set",
+    "cat": "Outdoor",
+    "w": 250,
+    "h": 150
+  },
+  {
+    "id": "trampoline",
+    "label": "Trampoline",
+    "cat": "Outdoor",
+    "w": 250,
+    "h": 250
+  },
+  {
+    "id": "pool-rect",
+    "label": "Pool (rect)",
+    "cat": "Outdoor",
+    "w": 500,
+    "h": 300
+  },
+  {
+    "id": "pool-round",
+    "label": "Pool (round)",
+    "cat": "Outdoor",
+    "w": 350,
+    "h": 350
+  },
+  {
+    "id": "hot-tub",
+    "label": "Hot tub",
+    "cat": "Outdoor",
+    "w": 200,
+    "h": 200
+  },
+  {
+    "id": "umbrella-table",
+    "label": "Umbrella table",
+    "cat": "Outdoor",
+    "w": 180,
+    "h": 180
+  },
+  {
+    "id": "planter-box",
+    "label": "Planter box",
+    "cat": "Outdoor",
+    "w": 100,
+    "h": 35
+  },
+  {
+    "id": "slide",
+    "label": "Slide",
+    "cat": "Outdoor",
+    "w": 100,
+    "h": 200
+  },
+  {
+    "id": "sandbox",
+    "label": "Sandbox",
+    "cat": "Outdoor",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "seesaw",
+    "label": "Seesaw",
+    "cat": "Outdoor",
+    "w": 180,
+    "h": 40
+  },
+  {
+    "id": "tree-large",
+    "label": "Large tree",
+    "cat": "Garden",
+    "w": 300,
+    "h": 300
+  },
+  {
+    "id": "tree-small",
+    "label": "Small tree",
+    "cat": "Garden",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "bush",
+    "label": "Bush",
+    "cat": "Garden",
+    "w": 80,
+    "h": 80
+  },
+  {
+    "id": "hedge",
+    "label": "Hedge",
+    "cat": "Garden",
+    "w": 200,
+    "h": 50
+  },
+  {
+    "id": "flower-bed",
+    "label": "Flower bed",
+    "cat": "Garden",
+    "w": 150,
+    "h": 60
+  },
+  {
+    "id": "palm-plant",
+    "label": "Palm plant",
+    "cat": "Garden",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "cactus",
+    "label": "Cactus",
+    "cat": "Garden",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "monstera",
+    "label": "Monstera",
+    "cat": "Garden",
+    "w": 70,
+    "h": 70
+  },
+  {
+    "id": "fern",
+    "label": "Fern",
+    "cat": "Garden",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "bonsai",
+    "label": "Bonsai",
+    "cat": "Garden",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "stepping-stones",
+    "label": "Stepping stones",
+    "cat": "Garden",
+    "w": 60,
+    "h": 180
+  },
+  {
+    "id": "pond",
+    "label": "Pond",
+    "cat": "Garden",
+    "w": 250,
+    "h": 180
+  },
+  {
+    "id": "fountain",
+    "label": "Fountain",
+    "cat": "Garden",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "boulder",
+    "label": "Boulder",
+    "cat": "Garden",
+    "w": 80,
+    "h": 60
+  },
+  {
+    "id": "vegetable-bed",
+    "label": "Vegetable bed",
+    "cat": "Garden",
+    "w": 180,
+    "h": 90
+  },
+  {
+    "id": "greenhouse",
+    "label": "Greenhouse",
+    "cat": "Garden",
+    "w": 250,
+    "h": 180
+  },
+  {
+    "id": "rug-rect",
+    "label": "Rug",
+    "cat": "Decor",
+    "w": 200,
+    "h": 140
+  },
+  {
+    "id": "rug-round",
+    "label": "Round rug",
+    "cat": "Decor",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "rug-runner",
+    "label": "Runner rug",
+    "cat": "Decor",
+    "w": 250,
+    "h": 80
+  },
+  {
+    "id": "rug-oval",
+    "label": "Oval rug",
+    "cat": "Decor",
+    "w": 180,
+    "h": 120
+  },
+  {
+    "id": "rug-cowhide",
+    "label": "Cowhide rug",
+    "cat": "Decor",
+    "w": 180,
+    "h": 160
+  },
+  {
+    "id": "floor-lamp",
+    "label": "Floor lamp",
+    "cat": "Decor",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "statue",
+    "label": "Statue",
+    "cat": "Decor",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "aquarium",
+    "label": "Aquarium",
+    "cat": "Decor",
+    "w": 120,
+    "h": 45
+  },
+  {
+    "id": "floor-vase",
+    "label": "Floor vase",
+    "cat": "Decor",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "floor-mirror",
+    "label": "Floor mirror",
+    "cat": "Decor",
+    "w": 60,
+    "h": 25
+  },
+  {
+    "id": "room-divider",
+    "label": "Room divider",
+    "cat": "Decor",
+    "w": 160,
+    "h": 30
+  },
+  {
+    "id": "globe",
+    "label": "Globe",
+    "cat": "Decor",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "telescope",
+    "label": "Telescope",
+    "cat": "Decor",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "easel",
+    "label": "Easel",
+    "cat": "Decor",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "sculpture",
+    "label": "Sculpture",
+    "cat": "Decor",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "grandfather-clock",
+    "label": "Grandfather clock",
+    "cat": "Decor",
+    "w": 45,
+    "h": 30
+  },
+  {
+    "id": "pool-table",
+    "label": "Pool table",
+    "cat": "Games & Kids",
+    "w": 250,
+    "h": 140
+  },
+  {
+    "id": "ping-pong",
+    "label": "Ping pong table",
+    "cat": "Games & Kids",
+    "w": 270,
+    "h": 150
+  },
+  {
+    "id": "foosball",
+    "label": "Foosball",
+    "cat": "Games & Kids",
+    "w": 140,
+    "h": 75
+  },
+  {
+    "id": "arcade",
+    "label": "Arcade cabinet",
+    "cat": "Games & Kids",
+    "w": 70,
+    "h": 80
+  },
+  {
+    "id": "air-hockey",
+    "label": "Air hockey",
+    "cat": "Games & Kids",
+    "w": 200,
+    "h": 100
+  },
+  {
+    "id": "chess-table",
+    "label": "Chess table",
+    "cat": "Games & Kids",
+    "w": 120,
+    "h": 60
+  },
+  {
+    "id": "play-mat",
+    "label": "Play mat",
+    "cat": "Games & Kids",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "high-chair",
+    "label": "High chair",
+    "cat": "Games & Kids",
+    "w": 55,
+    "h": 55
+  },
+  {
+    "id": "toy-house",
+    "label": "Toy house",
+    "cat": "Games & Kids",
+    "w": 90,
+    "h": 70
+  },
+  {
+    "id": "ball-pit",
+    "label": "Ball pit",
+    "cat": "Games & Kids",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "pet-bed",
+    "label": "Pet bed",
+    "cat": "Games & Kids",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "dog-crate",
+    "label": "Dog crate",
+    "cat": "Games & Kids",
+    "w": 90,
+    "h": 60
+  },
+  {
+    "id": "cat-tree",
+    "label": "Cat tree",
+    "cat": "Games & Kids",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "litter-box",
+    "label": "Litter box",
+    "cat": "Games & Kids",
+    "w": 45,
+    "h": 35
+  },
+  {
+    "id": "bird-cage",
+    "label": "Bird cage",
+    "cat": "Games & Kids",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "dart-board",
+    "label": "Darts area",
+    "cat": "Games & Kids",
+    "w": 60,
+    "h": 40
+  },
+  {
+    "id": "gas-stove-2",
+    "label": "Gas stove (2)",
+    "cat": "Indian Kitchen",
+    "w": 60,
+    "h": 40
+  },
+  {
+    "id": "gas-cylinder",
+    "label": "Gas cylinder",
+    "cat": "Indian Kitchen",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "mixer-grinder",
+    "label": "Mixer grinder",
+    "cat": "Indian Kitchen",
+    "w": 30,
+    "h": 40
+  },
+  {
+    "id": "wet-grinder",
+    "label": "Wet grinder",
+    "cat": "Indian Kitchen",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "pressure-cooker",
+    "label": "Pressure cooker",
+    "cat": "Indian Kitchen",
+    "w": 35,
+    "h": 45
+  },
+  {
+    "id": "kadai",
+    "label": "Kadai",
+    "cat": "Indian Kitchen",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "tawa",
+    "label": "Tawa",
+    "cat": "Indian Kitchen",
+    "w": 35,
+    "h": 40
+  },
+  {
+    "id": "idli-steamer",
+    "label": "Idli steamer",
+    "cat": "Indian Kitchen",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "matka",
+    "label": "Matka",
+    "cat": "Indian Kitchen",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "water-drum",
+    "label": "Water drum",
+    "cat": "Indian Kitchen",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "water-purifier",
+    "label": "Water purifier",
+    "cat": "Indian Kitchen",
+    "w": 40,
+    "h": 25
+  },
+  {
+    "id": "tiffin",
+    "label": "Tiffin carrier",
+    "cat": "Indian Kitchen",
+    "w": 20,
+    "h": 20
+  },
+  {
+    "id": "masala-box",
+    "label": "Masala box",
+    "cat": "Indian Kitchen",
+    "w": 25,
+    "h": 25
+  },
+  {
+    "id": "thali-stack",
+    "label": "Thali stack",
+    "cat": "Indian Kitchen",
+    "w": 30,
+    "h": 30
+  },
+  {
+    "id": "roti-basket",
+    "label": "Roti basket",
+    "cat": "Indian Kitchen",
+    "w": 25,
+    "h": 25
+  },
+  {
+    "id": "indian-platform",
+    "label": "Kitchen platform",
+    "cat": "Indian Kitchen",
+    "w": 240,
+    "h": 60
+  },
+  {
+    "id": "diwan",
+    "label": "Diwan",
+    "cat": "Indian Living",
+    "w": 190,
+    "h": 90
+  },
+  {
+    "id": "charpai",
+    "label": "Charpai",
+    "cat": "Indian Living",
+    "w": 100,
+    "h": 190
+  },
+  {
+    "id": "jhoola",
+    "label": "Jhoola swing",
+    "cat": "Indian Living",
+    "w": 150,
+    "h": 60
+  },
+  {
+    "id": "floor-seating",
+    "label": "Floor seating",
+    "cat": "Indian Living",
+    "w": 200,
+    "h": 150
+  },
+  {
+    "id": "pooja-mandir",
+    "label": "Pooja mandir",
+    "cat": "Indian Living",
+    "w": 90,
+    "h": 50
+  },
+  {
+    "id": "sandook",
+    "label": "Sandook",
+    "cat": "Indian Living",
+    "w": 100,
+    "h": 55
+  },
+  {
+    "id": "mudha",
+    "label": "Mudha stool",
+    "cat": "Indian Living",
+    "w": 40,
+    "h": 40
+  },
+  {
+    "id": "carrom-board",
+    "label": "Carrom board",
+    "cat": "Indian Living",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "tv-showcase",
+    "label": "TV showcase",
+    "cat": "Indian Living",
+    "w": 180,
+    "h": 50
+  },
+  {
+    "id": "antique-trunk",
+    "label": "Steel trunk",
+    "cat": "Indian Living",
+    "w": 90,
+    "h": 50
+  },
+  {
+    "id": "floor-cushions",
+    "label": "Floor cushions",
+    "cat": "Indian Living",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "bajot",
+    "label": "Bajot table",
+    "cat": "Indian Living",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "chowki",
+    "label": "Chowki",
+    "cat": "Indian Living",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "peacock-chair",
+    "label": "Peacock chair",
+    "cat": "Indian Living",
+    "w": 90,
+    "h": 90
+  },
+  {
+    "id": "brass-urli",
+    "label": "Brass urli",
+    "cat": "Indian Living",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "diwan-side",
+    "label": "Wooden sofa set",
+    "cat": "Indian Living",
+    "w": 220,
+    "h": 90
+  },
+  {
+    "id": "steel-almirah",
+    "label": "Steel almirah",
+    "cat": "Indian Bedroom",
+    "w": 90,
+    "h": 50
+  },
+  {
+    "id": "wooden-almirah",
+    "label": "Wooden almirah",
+    "cat": "Indian Bedroom",
+    "w": 120,
+    "h": 55
+  },
+  {
+    "id": "box-bed",
+    "label": "Box bed",
+    "cat": "Indian Bedroom",
+    "w": 180,
+    "h": 200
+  },
+  {
+    "id": "folding-cot",
+    "label": "Folding cot",
+    "cat": "Indian Bedroom",
+    "w": 75,
+    "h": 180
+  },
+  {
+    "id": "mosquito-bed",
+    "label": "Net bed",
+    "cat": "Indian Bedroom",
+    "w": 160,
+    "h": 200
+  },
+  {
+    "id": "dressing-table",
+    "label": "Dressing table",
+    "cat": "Indian Bedroom",
+    "w": 90,
+    "h": 45
+  },
+  {
+    "id": "sewing-machine",
+    "label": "Sewing machine",
+    "cat": "Indian Bedroom",
+    "w": 90,
+    "h": 45
+  },
+  {
+    "id": "iron-board",
+    "label": "Iron table",
+    "cat": "Indian Bedroom",
+    "w": 110,
+    "h": 35
+  },
+  {
+    "id": "clothes-stand",
+    "label": "Drying stand",
+    "cat": "Indian Bedroom",
+    "w": 150,
+    "h": 60
+  },
+  {
+    "id": "bucket-mug",
+    "label": "Bucket & mug",
+    "cat": "Indian Bedroom",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "sil-batta",
+    "label": "Sil batta",
+    "cat": "Indian Bedroom",
+    "w": 45,
+    "h": 60
+  },
+  {
+    "id": "chakki",
+    "label": "Chakki",
+    "cat": "Indian Bedroom",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "inverter",
+    "label": "Inverter",
+    "cat": "Indian Bedroom",
+    "w": 45,
+    "h": 40
+  },
+  {
+    "id": "godrej-locker",
+    "label": "Locker safe",
+    "cat": "Indian Bedroom",
+    "w": 50,
+    "h": 45
+  },
+  {
+    "id": "khatiya",
+    "label": "Khatiya",
+    "cat": "Indian Bedroom",
+    "w": 95,
+    "h": 185
+  },
+  {
+    "id": "telephone-table",
+    "label": "Telephone table",
+    "cat": "Indian Bedroom",
+    "w": 60,
+    "h": 40
+  },
+  {
+    "id": "squat-toilet",
+    "label": "Indian toilet",
+    "cat": "Indian Utility",
+    "w": 55,
+    "h": 75
+  },
+  {
+    "id": "geyser",
+    "label": "Geyser",
+    "cat": "Indian Utility",
+    "w": 45,
+    "h": 30
+  },
+  {
+    "id": "twin-tub-washer",
+    "label": "Twin-tub washer",
+    "cat": "Indian Utility",
+    "w": 75,
+    "h": 45
+  },
+  {
+    "id": "hand-pump",
+    "label": "Hand pump",
+    "cat": "Indian Utility",
+    "w": 40,
+    "h": 80
+  },
+  {
+    "id": "well",
+    "label": "Well",
+    "cat": "Indian Utility",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "sintex-tank",
+    "label": "Water tank",
+    "cat": "Indian Utility",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "bath-stool",
+    "label": "Bath patla",
+    "cat": "Indian Utility",
+    "w": 35,
+    "h": 25
+  },
+  {
+    "id": "dhobi-stone",
+    "label": "Washing stone",
+    "cat": "Indian Utility",
+    "w": 60,
+    "h": 45
+  },
+  {
+    "id": "tulsi-planter",
+    "label": "Tulsi vrindavan",
+    "cat": "Indian Utility",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "desert-cooler",
+    "label": "Desert cooler",
+    "cat": "Indian Utility",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "stand-fan",
+    "label": "Pedestal fan",
+    "cat": "Indian Utility",
+    "w": 50,
+    "h": 50
+  },
+  {
+    "id": "ceiling-fan",
+    "label": "Ceiling fan",
+    "cat": "Indian Utility",
+    "w": 120,
+    "h": 120
+  },
+  {
+    "id": "table-fan",
+    "label": "Table fan",
+    "cat": "Indian Utility",
+    "w": 35,
+    "h": 35
+  },
+  {
+    "id": "plastic-drum",
+    "label": "Plastic drum",
+    "cat": "Indian Utility",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "buckets-set",
+    "label": "Buckets",
+    "cat": "Indian Utility",
+    "w": 70,
+    "h": 35
+  },
+  {
+    "id": "clothesline",
+    "label": "Clothesline",
+    "cat": "Indian Utility",
+    "w": 250,
+    "h": 30
+  },
+  {
+    "id": "floor-dining",
+    "label": "Floor dining",
+    "cat": "Indian Dining",
+    "w": 200,
+    "h": 150
+  },
+  {
+    "id": "dining-6-indian",
+    "label": "Dining (6)",
+    "cat": "Indian Dining",
+    "w": 200,
+    "h": 120
+  },
+  {
+    "id": "small-fridge",
+    "label": "Small fridge",
+    "cat": "Indian Dining",
+    "w": 55,
+    "h": 55
+  },
+  {
+    "id": "study-table",
+    "label": "Study table",
+    "cat": "Indian Dining",
+    "w": 110,
+    "h": 60
+  },
+  {
+    "id": "entrance-shoe-rack",
+    "label": "Shoe cabinet",
+    "cat": "Indian Dining",
+    "w": 90,
+    "h": 35
+  },
+  {
+    "id": "umbrella-stand",
+    "label": "Umbrella stand",
+    "cat": "Indian Dining",
+    "w": 25,
+    "h": 25
+  },
+  {
+    "id": "showcase",
+    "label": "Showcase",
+    "cat": "Indian Dining",
+    "w": 150,
+    "h": 45
+  },
+  {
+    "id": "magazine-rack",
+    "label": "Magazine rack",
+    "cat": "Indian Dining",
+    "w": 40,
+    "h": 30
+  },
+  {
+    "id": "murti-stand",
+    "label": "Murti pedestal",
+    "cat": "Indian Dining",
+    "w": 45,
+    "h": 45
+  },
+  {
+    "id": "samai",
+    "label": "Brass lamp",
+    "cat": "Indian Dining",
+    "w": 30,
+    "h": 30
+  },
+  {
+    "id": "pooja-side-table",
+    "label": "Pooja table",
+    "cat": "Indian Dining",
+    "w": 60,
+    "h": 40
+  },
+  {
+    "id": "bar-unit",
+    "label": "Bar unit",
+    "cat": "Indian Dining",
+    "w": 120,
+    "h": 50
+  },
+  {
+    "id": "verandah-jhoola",
+    "label": "Verandah jhoola",
+    "cat": "Indian Dining",
+    "w": 180,
+    "h": 80
+  },
+  {
+    "id": "scooter",
+    "label": "Scooter",
+    "cat": "Indian Dining",
+    "w": 70,
+    "h": 180
+  },
+  {
+    "id": "bicycle",
+    "label": "Bicycle",
+    "cat": "Indian Dining",
+    "w": 60,
+    "h": 180
+  },
+  {
+    "id": "motorcycle",
+    "label": "Motorcycle",
+    "cat": "Indian Dining",
+    "w": 80,
+    "h": 200
+  },
+  {
+    "id": "palna",
+    "label": "Palna cradle",
+    "cat": "Indian Misc",
+    "w": 60,
+    "h": 100
+  },
+  {
+    "id": "grain-bin",
+    "label": "Grain bin",
+    "cat": "Indian Misc",
+    "w": 60,
+    "h": 60
+  },
+  {
+    "id": "pickle-jars",
+    "label": "Pickle jars",
+    "cat": "Indian Misc",
+    "w": 60,
+    "h": 30
+  },
+  {
+    "id": "tandoor",
+    "label": "Tandoor",
+    "cat": "Indian Misc",
+    "w": 70,
+    "h": 70
+  },
+  {
+    "id": "mud-chulha",
+    "label": "Mud chulha",
+    "cat": "Indian Misc",
+    "w": 70,
+    "h": 50
+  },
+  {
+    "id": "stone-bench",
+    "label": "Stone bench",
+    "cat": "Indian Misc",
+    "w": 150,
+    "h": 45
+  },
+  {
+    "id": "aram-kursi",
+    "label": "Aram kursi",
+    "cat": "Indian Misc",
+    "w": 70,
+    "h": 110
+  },
+  {
+    "id": "hookah",
+    "label": "Hookah",
+    "cat": "Indian Misc",
+    "w": 30,
+    "h": 30
+  },
+  {
+    "id": "thela-cart",
+    "label": "Thela cart",
+    "cat": "Indian Misc",
+    "w": 100,
+    "h": 180
+  },
+  {
+    "id": "rangoli",
+    "label": "Rangoli",
+    "cat": "Indian Misc",
+    "w": 100,
+    "h": 100
+  },
+  {
+    "id": "dhurrie",
+    "label": "Dhurrie rug",
+    "cat": "Indian Misc",
+    "w": 180,
+    "h": 120
+  },
+  {
+    "id": "jute-mat",
+    "label": "Jute mat",
+    "cat": "Indian Misc",
+    "w": 120,
+    "h": 70
+  },
+  {
+    "id": "bamboo-ladder",
+    "label": "Bamboo ladder",
+    "cat": "Indian Misc",
+    "w": 40,
+    "h": 200
+  },
+  {
+    "id": "kalash-set",
+    "label": "Brass pots",
+    "cat": "Indian Misc",
+    "w": 60,
+    "h": 30
+  },
+  {
+    "id": "swing-bench",
+    "label": "Swing bench",
+    "cat": "Indian Misc",
+    "w": 160,
+    "h": 70
+  },
+  {
+    "id": "gate-arch",
+    "label": "Entrance arch",
+    "cat": "Indian Misc",
+    "w": 150,
+    "h": 40
+  },
+  {
+    "id": "teddy-sofa",
+    "label": "Teddy bear sofa",
+    "cat": "Seating",
+    "w": 220,
+    "h": 110
+  },
+  {
+    "id": "fort-classic",
+    "label": "Pillow fort",
+    "cat": "Pillow Forts",
+    "w": 200,
+    "h": 180
+  },
+  {
+    "id": "fort-castle",
+    "label": "Fort castle",
+    "cat": "Pillow Forts",
+    "w": 250,
+    "h": 250
+  },
+  {
+    "id": "fort-teepee",
+    "label": "Blanket teepee",
+    "cat": "Pillow Forts",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "fort-tunnel",
+    "label": "Fort tunnel",
+    "cat": "Pillow Forts",
+    "w": 100,
+    "h": 250
+  },
+  {
+    "id": "fort-sofa",
+    "label": "Sofa fort",
+    "cat": "Pillow Forts",
+    "w": 220,
+    "h": 180
+  },
+  {
+    "id": "fort-bed",
+    "label": "Bed fort",
+    "cat": "Pillow Forts",
+    "w": 200,
+    "h": 220
+  },
+  {
+    "id": "fort-box",
+    "label": "Box fort",
+    "cat": "Pillow Forts",
+    "w": 150,
+    "h": 150
+  },
+  {
+    "id": "eemans-table",
+    "label": "Eeman's table (my table)",
+    "cat": "Special",
+    "w": 180,
+    "h": 100
+  }
+]
