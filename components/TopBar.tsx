@@ -1,9 +1,9 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { sceneBounds } from "@/lib/geometry";
+import { sceneBounds, wallLen } from "@/lib/geometry";
 import { exportSceneJSON, fitSceneInView, loadSample, pickSceneFile } from "@/lib/io";
-import { PRINT, drawGrid, drawHouseLabels, drawScene } from "@/lib/render";
+import { PRINT, drawGrid, drawHouseLabels, drawScene, drawWallLabel } from "@/lib/render";
 import { useEditor } from "@/lib/store";
 import { visibleScene } from "@/lib/houses";
 import { asset } from "@/lib/paths";
@@ -89,6 +89,10 @@ export default function TopBar() {
     );
     drawScene(ctx, scene, PRINT, px);
     drawHouseLabels(ctx, scene, PRINT, px);
+    // Dims mode carries into the export: every wall labelled with its length
+    if (useEditor.getState().dimsOn) {
+      for (const w of scene.walls) if (wallLen(w) >= 40) drawWallLabel(ctx, w, PRINT, px);
+    }
 
     // overall dimension lines per building (and one for loose canvas walls)
     const groups: { walls: typeof scene.walls }[] = [];
@@ -151,7 +155,7 @@ export default function TopBar() {
   };
 
   return (
-    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex w-max max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-0.5 whitespace-nowrap rounded-2xl py-1.5 pl-2 pr-2">
+    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex w-max max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-0.5 overflow-x-auto whitespace-nowrap rounded-2xl py-1.5 pl-2 pr-2 [scrollbar-width:none] [&>*]:shrink-0">
       <img
         src={asset("/logo-ink.png")}
         alt="roughhouse"
