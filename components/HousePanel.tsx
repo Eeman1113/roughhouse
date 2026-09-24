@@ -54,7 +54,7 @@ export default function HousePanel() {
           className={`press whitespace-nowrap rounded-lg px-2 py-1 text-[12px] font-medium ${
             h.id === activeHouseId
               ? "bg-[var(--tint-soft)] text-[#79b8ff]"
-              : "text-[var(--text-2)] hover:bg-white/6"
+              : "neu text-[var(--text-2)]"
           }`}
         >
           {h.name}
@@ -66,7 +66,7 @@ export default function HousePanel() {
         className={`press whitespace-nowrap rounded-lg px-2 py-1 text-[12px] ${
           activeHouseId === null
             ? "bg-white/10 text-[var(--text)]"
-            : "text-[var(--text-3)] hover:bg-white/6"
+            : "neu text-[var(--text-3)]"
         }`}
       >
         Canvas
@@ -104,7 +104,7 @@ export default function HousePanel() {
               className={`press whitespace-nowrap rounded-lg px-2 py-1 text-[12px] ${
                 f.id === house.activeFloorId
                   ? "bg-[var(--tint)] font-medium text-white"
-                  : "text-[var(--text-2)] hover:bg-white/6"
+                  : "neu text-[var(--text-2)]"
               }`}
             >
               {f.name}
