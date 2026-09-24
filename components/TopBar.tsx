@@ -150,7 +150,7 @@ export default function TopBar() {
   };
 
   return (
-    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex -translate-x-1/2 items-center gap-0.5 rounded-2xl py-1.5 pl-2 pr-3">
+    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex w-max max-w-[calc(100vw-24px)] -translate-x-1/2 items-center gap-0.5 whitespace-nowrap rounded-2xl py-1.5 pl-2 pr-2">
       <img
         src={asset("/logo-ink.png")}
         alt="roughhouse"
