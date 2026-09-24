@@ -14,6 +14,7 @@ import {
 import { birth } from "./anim";
 import { getItemSprite } from "./sprites";
 import { polygonArea, polygonCentroid } from "./rooms";
+import { wallHeight } from "./scale";
 import { Item, Note, Room, Scene, Selection, Stairs, Vec, Wall } from "./types";
 
 export interface Palette {
@@ -107,8 +108,12 @@ export function drawWalls(ctx: CanvasRenderingContext2D, scene: Scene, pal: Pale
   for (const w of scene.walls) {
     ctx.strokeStyle = w.color ?? pal.wall;
     ctx.lineWidth = w.thickness;
+    // knee walls / half walls read translucent (standard plan notation)
+    const low = wallHeight(scene, w) < 150;
+    if (low) ctx.globalAlpha = 0.55;
     wallPath(ctx, w);
     ctx.stroke();
+    if (low) ctx.globalAlpha = 1;
   }
   ctx.lineCap = "butt";
 }

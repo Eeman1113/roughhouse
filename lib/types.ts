@@ -7,6 +7,8 @@ export interface Wall {
   a: Vec;
   b: Vec;
   thickness: number; // cm
+  /** wall height override in cm; inherits the floor height (270 default) when unset. */
+  height?: number;
   color?: string; // optional tint override
   locked?: boolean;
   houseId?: string;
@@ -93,6 +95,8 @@ export interface Room {
 export interface Floor {
   id: string;
   name: string;
+  /** floor-to-ceiling height in cm; walls inherit it (default 270). */
+  height?: number;
 }
 
 /** A named group of elements with stacked floors; only the active floor is visible. */

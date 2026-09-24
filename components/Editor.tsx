@@ -34,6 +34,7 @@ import { cancelViewSpring } from "@/lib/viewspring";
 import { Guide, drawGuides, smartMoveSnap, smartWallSnap } from "@/lib/snapping";
 import { ghostWalls, visibleScene } from "@/lib/houses";
 import { markBirth, sceneFadeAlpha } from "@/lib/anim";
+import { scaleForPoint, scaled } from "@/lib/scale";
 import { DetectedRegion, ROOM_COLORS, detectRoomAt, pointInPolygon, polygonCentroid } from "@/lib/rooms";
 import { itemDef } from "@/lib/catalog";
 import {
@@ -442,11 +443,12 @@ export default function Editor() {
         const np = snapWallPoint(p, prev);
         if (dist(np, prev) >= 5) {
           st.checkpoint();
+          const thW = scaled(DEFAULT_WALL_THICKNESS, scaleForPoint(st.scene, st.activeHouseId, p));
           st.mutate((s) => ({
             ...s,
             walls: [
               ...s.walls,
-              { id: uid(), a: { ...prev }, b: { ...np }, thickness: DEFAULT_WALL_THICKNESS, ...houseTag() },
+              { id: uid(), a: { ...prev }, b: { ...np }, thickness: thW, ...houseTag() },
             ],
           }));
           // clicking back on the chain start closes the loop
@@ -500,14 +502,16 @@ export default function Editor() {
       const near = nearestWall(visibleScene(st.scene), p, 40 / st.zoom + 20);
       if (!near) return;
       const def = OPENING_DEFAULTS[tool as OpeningKind];
-      const t = clampOpeningT(near.wall, near.t, def.width);
+      const f = scaleForPoint(st.scene, st.activeHouseId, p);
+      const width = scaled(def.width, f);
+      const t = clampOpeningT(near.wall, near.t, width);
       st.checkpoint();
       const id = uid();
       st.mutate((s) => ({
         ...s,
         openings: [
           ...s.openings,
-          { id, wallId: near.wall.id, t, width: def.width, kind: tool as OpeningKind, flip: false, swing: false },
+          { id, wallId: near.wall.id, t, width, kind: tool as OpeningKind, flip: false, swing: false },
         ],
       }));
       st.select([{ kind: "opening", id }]);
@@ -518,13 +522,14 @@ export default function Editor() {
       st.checkpoint();
       const id = uid();
       const pos = snapToGrid(p, SNAP_GRID);
+      const fSt = scaleForPoint(st.scene, st.activeHouseId, p);
       st.mutate((s) => ({
         ...s,
         stairs: [
           ...s.stairs,
           tool === "stairs"
-            ? { id, kind: "straight" as const, pos, rot: 0, width: 100, length: 300, steps: 15, ...houseTag() }
-            : { id, kind: "spiral" as const, pos, rot: 0, width: 200, length: 200, steps: 14, ...houseTag() },
+            ? { id, kind: "straight" as const, pos, rot: 0, width: scaled(100, fSt), length: scaled(300, fSt), steps: 15, ...houseTag() }
+            : { id, kind: "spiral" as const, pos, rot: 0, width: scaled(200, fSt), length: scaled(200, fSt), steps: 14, ...houseTag() },
         ],
       }));
       markBirth(id);
@@ -535,11 +540,15 @@ export default function Editor() {
     if (tool.startsWith("item:")) {
       const kind = tool.slice(5) as ItemKind;
       const def = itemDef(kind);
+      const fIt = scaleForPoint(st.scene, st.activeHouseId, p);
       st.checkpoint();
       const id = uid();
       st.mutate((s) => ({
         ...s,
-        items: [...s.items, { id, kind, pos: snapToGrid(p, 5), rot: 0, w: def.w, h: def.h, ...houseTag() }],
+        items: [
+          ...s.items,
+          { id, kind, pos: snapToGrid(p, 5), rot: 0, w: scaled(def.w, fIt), h: scaled(def.h, fIt), ...houseTag() },
+        ],
       }));
       markBirth(id);
       st.select([{ kind: "item", id }]);
@@ -813,14 +822,15 @@ export default function Editor() {
         const th = DEFAULT_WALL_THICKNESS;
         st.checkpoint();
         const tag = houseTag();
+        const thR = scaled(th, scaleForPoint(st.scene, st.activeHouseId, d.current));
         st.mutate((s) => ({
           ...s,
           walls: [
             ...s.walls,
-            { id: uid(), a: { x: x0, y: y0 }, b: { x: x1, y: y0 }, thickness: th, ...tag },
-            { id: uid(), a: { x: x1, y: y0 }, b: { x: x1, y: y1 }, thickness: th, ...tag },
-            { id: uid(), a: { x: x1, y: y1 }, b: { x: x0, y: y1 }, thickness: th, ...tag },
-            { id: uid(), a: { x: x0, y: y1 }, b: { x: x0, y: y0 }, thickness: th, ...tag },
+            { id: uid(), a: { x: x0, y: y0 }, b: { x: x1, y: y0 }, thickness: thR, ...tag },
+            { id: uid(), a: { x: x1, y: y0 }, b: { x: x1, y: y1 }, thickness: thR, ...tag },
+            { id: uid(), a: { x: x1, y: y1 }, b: { x: x0, y: y1 }, thickness: thR, ...tag },
+            { id: uid(), a: { x: x0, y: y1 }, b: { x: x0, y: y0 }, thickness: thR, ...tag },
           ],
         }));
       }
@@ -887,11 +897,12 @@ export default function Editor() {
             const prev = pts[pts.length - 1];
             const np = add(prev, { x: lastDir.current.x * cm, y: lastDir.current.y * cm });
             st.checkpoint();
+            const thT = scaled(DEFAULT_WALL_THICKNESS, scaleForPoint(st.scene, st.activeHouseId, np));
             st.mutate((sc) => ({
               ...sc,
               walls: [
                 ...sc.walls,
-                { id: uid(), a: { ...prev }, b: np, thickness: DEFAULT_WALL_THICKNESS, ...houseTag() },
+                { id: uid(), a: { ...prev }, b: np, thickness: thT, ...houseTag() },
               ],
             }));
             pts.push(np);

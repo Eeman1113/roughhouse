@@ -7,6 +7,7 @@ import { useEditor } from "@/lib/store";
 import { OPENING_DEFAULTS } from "@/lib/types";
 import { itemDef } from "@/lib/catalog";
 import { groupAsHouse, setActiveFloor } from "@/lib/houses";
+import { wallHeight } from "@/lib/scale";
 import { ROOM_COLORS, polygonArea } from "@/lib/rooms";
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
@@ -155,6 +156,20 @@ export default function PropertiesPanel() {
                 edit((s) => ({
                   ...s,
                   walls: s.walls.map((x) => (x.id === w.id ? { ...x, thickness: t } : x)),
+                }))
+              }
+            />
+          </Row>
+          <Row label="Height">
+            <NumInput
+              value={wallHeight(scene, w)}
+              min={30}
+              max={600}
+              suffix="cm"
+              onChange={(hv) =>
+                edit((s) => ({
+                  ...s,
+                  walls: s.walls.map((x) => (x.id === w.id ? { ...x, height: hv } : x)),
                 }))
               }
             />
