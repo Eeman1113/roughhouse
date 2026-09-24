@@ -28,7 +28,7 @@ function Btn({
       ? "bg-[var(--tint)] text-white hover:brightness-110"
       : tone === "danger"
         ? "text-[var(--danger)] hover:bg-white/8"
-        : "neu text-[var(--text-2)] hover:text-[var(--text)]";
+        : "text-[var(--text-2)] hover:bg-white/8 hover:text-[var(--text)]";
   return (
     <button
       onClick={onClick}
