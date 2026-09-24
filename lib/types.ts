@@ -128,6 +128,7 @@ export interface Selection {
 export type Tool =
   | "select"
   | "wall"
+  | "arc"
   | "room"
   | "room-label"
   | "pan"

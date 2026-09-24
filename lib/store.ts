@@ -11,6 +11,8 @@ interface EditorState {
   tool: Tool;
   selection: Selection[];
   gridOn: boolean;
+  /** show a length label on every visible wall */
+  dimsOn: boolean;
   pan: Vec;
   zoom: number; // screen px per cm
   /** House that owns newly drawn elements (null = plain canvas). */
@@ -31,6 +33,7 @@ interface EditorState {
   showFlash: (text: string, tone?: "ok" | "error") => void;
   clearScene: () => void;
   toggleGrid: () => void;
+  toggleDims: () => void;
   setActiveHouse: (id: string | null) => void;
   setView: (pan: Vec, zoom: number) => void;
 }
@@ -44,6 +47,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   tool: "select",
   selection: [],
   gridOn: true,
+  dimsOn: false,
   pan: { x: 0, y: 0 },
   zoom: 0.75,
   activeHouseId: null,
@@ -114,6 +118,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   toggleGrid: () => set((st) => ({ gridOn: !st.gridOn })),
+  toggleDims: () => set((st) => ({ dimsOn: !st.dimsOn })),
   setActiveHouse: (activeHouseId) => set({ activeHouseId }),
   setView: (pan, zoom) => set({ pan, zoom }),
 }));

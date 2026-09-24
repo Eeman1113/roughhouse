@@ -184,6 +184,12 @@ export function sceneBounds(scene: Scene): { min: Vec; max: Vec } | null {
     const r = Math.max(i.w, i.h);
     pts.push(add(i.pos, v(-r / 2, -r / 2)), add(i.pos, v(r / 2, r / 2)));
   }
+  for (const r of scene.rooms) pts.push(...r.poly);
+  for (const n of scene.notes) {
+    // rough text extent: left-anchored, ~0.55em per character
+    const longest = Math.max(1, ...n.text.split("\n").map((l) => l.length));
+    pts.push(add(n.pos, v(0, -n.size)), add(n.pos, v(longest * n.size * 0.55, n.size)));
+  }
   if (!pts.length) return null;
   const min = v(Infinity, Infinity);
   const max = v(-Infinity, -Infinity);

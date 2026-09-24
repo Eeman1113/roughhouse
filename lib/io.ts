@@ -5,17 +5,27 @@ import { Scene } from "./types";
 import { goToView } from "./viewspring";
 import { asset } from "./paths";
 
-/** Animate the view so the whole plan fits on screen. */
+/** Screen area not covered by floating chrome (tool rail, properties, top bar, house bar). */
+function freeViewport() {
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+  const wide = vw >= 900;
+  const left = wide ? 263 + 36 : 24;
+  const right = wide ? 279 + 36 : 24;
+  const top = 70 + 36;
+  const bottom = (useEditor.getState().scene.houses.length ? 110 : 80) + 24;
+  return { x: left, y: top, w: Math.max(200, vw - left - right), h: Math.max(200, vh - top - bottom) };
+}
+
+/** Animate the view so the whole plan fits in the free space between the panels. */
 export function fitSceneInView(scene: Scene = useEditor.getState().scene) {
   const b = sceneBounds(scene);
   if (!b || typeof window === "undefined") return;
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const margin = 140;
+  const f = freeViewport();
   const w = b.max.x - b.min.x || 100;
   const h = b.max.y - b.min.y || 100;
-  const nz = Math.min(8, Math.max(0.05, Math.min((vw - margin * 2) / w, (vh - margin * 2) / h)));
-  goToView({ x: (vw - w * nz) / 2 - b.min.x * nz, y: (vh - h * nz) / 2 - b.min.y * nz }, nz);
+  const nz = Math.min(8, Math.max(0.05, Math.min(f.w / w, f.h / h)));
+  goToView({ x: f.x + (f.w - w * nz) / 2 - b.min.x * nz, y: f.y + (f.h - h * nz) / 2 - b.min.y * nz }, nz);
 }
 
 export function exportSceneJSON() {

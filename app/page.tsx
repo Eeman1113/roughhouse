@@ -4,6 +4,8 @@ import PropertiesPanel from "@/components/PropertiesPanel";
 import Toolbar from "@/components/Toolbar";
 import TopBar from "@/components/TopBar";
 import Toast from "@/components/Toast";
+import EmptyState from "@/components/EmptyState";
+import ShortcutSheet from "@/components/ShortcutSheet";
 
 export default function Home() {
   return (
@@ -12,11 +14,13 @@ export default function Home() {
       <div className="absolute inset-0">
         <Editor />
       </div>
+      <EmptyState />
       <TopBar />
       <Toolbar />
       <PropertiesPanel />
       <HousePanel />
       <Toast />
+      <ShortcutSheet />
     </div>
   );
 }

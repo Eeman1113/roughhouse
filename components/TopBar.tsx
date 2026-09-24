@@ -48,6 +48,7 @@ export default function TopBar() {
   const canUndo = useEditor((s) => s.past.length > 0);
   const canRedo = useEditor((s) => s.future.length > 0);
   const gridOn = useEditor((s) => s.gridOn);
+  const dimsOn = useEditor((s) => s.dimsOn);
   const zoom = useEditor((s) => s.zoom);
 
   const zoomBy = (f: number) => {
@@ -182,6 +183,9 @@ export default function TopBar() {
       </div>
       <Btn onClick={() => useEditor.getState().toggleGrid()} title="Toggle grid (G)">
         <span className={gridOn ? "text-[var(--tint)]" : undefined}>Grid</span>
+      </Btn>
+      <Btn onClick={() => useEditor.getState().toggleDims()} title="Show every wall's length (L)">
+        <span className={dimsOn ? "text-[var(--tint)]" : undefined}>Dims</span>
       </Btn>
       <Divider />
       <Btn onClick={exportPNG} title="Export plan as PNG image" tone="tint">

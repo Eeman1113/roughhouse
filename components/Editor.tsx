@@ -18,6 +18,7 @@ import {
   snapToGrid,
   sub,
   wallDir,
+  wallLen,
   wallPointAt,
   wallTangentAt,
 } from "@/lib/geometry";
@@ -93,11 +94,13 @@ type Drag =
 export default function Editor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [dropping, setDropping] = useState(false);
+  const renderRef = useRef<((ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) => void) | null>(null);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   // interaction state lives in refs; a rAF loop redraws every frame
   const cursor = useRef<Vec | null>(null); // world
   const drawing = useRef<Vec[] | null>(null); // wall chain points
+  const arcDraft = useRef<{ a: Vec; b?: Vec } | null>(null); // curved-wall tool: start, end, then bend
   const drag = useRef<Drag | null>(null);
   const spaceDown = useRef(false);
   const hover = useRef<Selection | null>(null);
@@ -137,7 +140,7 @@ export default function Editor() {
     let raf = 0;
     const loop = () => {
       raf = requestAnimationFrame(loop);
-      render(ctx, canvas);
+      renderRef.current?.(ctx, canvas);
     };
     loop();
 
@@ -145,7 +148,7 @@ export default function Editor() {
       cancelAnimationFrame(raf);
       ro.disconnect();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
   }, []);
 
   // ---------- coordinate helpers ----------
@@ -470,6 +473,32 @@ export default function Editor() {
           if (pts.length >= 2 && dist(np, pts[0]) < 1) drawing.current = null;
           else pts.push(np);
         }
+      }
+      return;
+    }
+
+    if (tool === "arc") {
+      const dr = arcDraft.current;
+      if (!dr) {
+        arcDraft.current = { a: snapWallPoint(p) };
+      } else if (!dr.b) {
+        const b = snapWallPoint(p, dr.a);
+        if (dist(b, dr.a) >= 20) dr.b = b;
+      } else {
+        const bulge = arcBulgeFor(dr.a, dr.b, p);
+        st.checkpoint();
+        const thW = scaled(DEFAULT_WALL_THICKNESS, scaleForPoint(st.scene, st.activeHouseId, p));
+        const wid = uid();
+        st.mutate((s) => ({
+          ...s,
+          walls: [
+            ...s.walls,
+            { id: wid, a: { ...dr.a }, b: { ...dr.b! }, thickness: thW, ...(bulge ? { bulge } : {}), ...houseTag() },
+          ],
+        }));
+        markBirth(wid);
+        // chain: the next curve starts where this one ended
+        arcDraft.current = { a: { ...dr.b } };
       }
       return;
     }
@@ -1015,12 +1044,14 @@ export default function Editor() {
       switch (e.key) {
         case "Escape":
           typedLen.current = "";
-          if (drawing.current) drawing.current = null;
+          if (arcDraft.current) arcDraft.current = null;
+          else if (drawing.current) drawing.current = null;
           else if (st.tool !== "select") st.setTool("select");
           else st.select([]);
           break;
         case "Enter":
           drawing.current = null;
+          arcDraft.current = null;
           break;
         case "Delete":
         case "Backspace":
@@ -1041,6 +1072,11 @@ export default function Editor() {
         case "w":
         case "W":
           st.setTool("wall");
+          break;
+        case "c":
+        case "C":
+          arcDraft.current = null;
+          st.setTool("arc");
           break;
         case "b":
         case "B":
@@ -1074,6 +1110,10 @@ export default function Editor() {
         case "G":
           st.toggleGrid();
           break;
+        case "l":
+        case "L":
+          st.toggleDims();
+          break;
       }
     };
     const onKeyUp = (e: KeyboardEvent) => {
@@ -1087,36 +1127,11 @@ export default function Editor() {
     };
   }, []);
 
-  // ---------- selection ops ----------
-
-  function rotateSelection(by: number) {
-    const st = useEditor.getState();
-    const itemIds = new Set(st.selection.filter((s) => s.kind === "item").map((s) => s.id));
-    const stairIds = new Set(st.selection.filter((s) => s.kind === "stairs").map((s) => s.id));
-    if (!itemIds.size && !stairIds.size) return;
-    st.checkpoint();
-    st.mutate((s) => ({
-      ...s,
-      items: s.items.map((x) => (itemIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
-      stairs: s.stairs.map((x) => (stairIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
-    }));
-  }
-
-  function flipSelection() {
-    const st = useEditor.getState();
-    const sel = st.selection.length === 1 ? st.selection[0] : null;
-    if (sel?.kind !== "opening") return;
-    st.checkpoint();
-    st.mutate((s) => ({
-      ...s,
-      openings: s.openings.map((o) => (o.id === sel.id ? { ...o, flip: !o.flip } : o)),
-    }));
-  }
-
   // ---------- render loop ----------
 
   function render(ctx: CanvasRenderingContext2D, canvas: HTMLCanvasElement) {
     const st = useEditor.getState();
+    if (st.tool !== "arc" && arcDraft.current) arcDraft.current = null; // left the tool mid-draft
     const dpr = window.devicePixelRatio || 1;
     const w = canvas.width / dpr;
     const h = canvas.height / dpr;
@@ -1175,6 +1190,15 @@ export default function Editor() {
     drawScene(ctx, visibleScene(st.scene), pal, st.zoom);
     drawHouseLabels(ctx, st.scene, pal, st.zoom);
     ctx.globalAlpha = 1;
+
+    // dimensions mode: every wall carries its length (selected walls draw their own)
+    if (st.dimsOn) {
+      const selIds = new Set(st.selection.filter((x) => x.kind === "wall").map((x) => x.id));
+      for (const w of visibleScene(st.scene).walls) {
+        if (selIds.has(w.id) || wallLen(w) < 40) continue;
+        drawWallLabel(ctx, w, pal, st.zoom);
+      }
+    }
 
     const solo = st.selection.length === 1;
     for (const sel of st.selection) drawSelection(ctx, st.scene, sel, pal, st.zoom, solo);
@@ -1245,9 +1269,58 @@ export default function Editor() {
       }
     }
 
+    // curved-wall tool preview
+    if (st.tool === "arc" && cursor.current && !drag.current) {
+      const dr = arcDraft.current;
+      ctx.save();
+      ctx.strokeStyle = pal.select;
+      ctx.fillStyle = pal.select;
+      if (!dr) {
+        const np = snapWallPoint(cursor.current);
+        ctx.globalAlpha = 0.6;
+        ctx.beginPath();
+        ctx.arc(np.x, np.y, 4 / st.zoom, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        const b = dr.b ?? snapWallPoint(cursor.current, dr.a);
+        const bulge = dr.b ? arcBulgeFor(dr.a, dr.b, cursor.current) : 0;
+        const pw: Wall = { id: "preview", a: dr.a, b, thickness: DEFAULT_WALL_THICKNESS, ...(bulge ? { bulge } : {}) };
+        ctx.globalAlpha = 0.5;
+        ctx.lineWidth = DEFAULT_WALL_THICKNESS;
+        ctx.lineCap = "square";
+        wallPath(ctx, pw);
+        ctx.stroke();
+        ctx.lineCap = "butt";
+        ctx.globalAlpha = 1;
+        if (dr.b) {
+          // dashed chord shows what "straight" would be
+          ctx.setLineDash([6 / st.zoom, 5 / st.zoom]);
+          ctx.lineWidth = 1.5 / st.zoom;
+          ctx.beginPath();
+          ctx.moveTo(dr.a.x, dr.a.y);
+          ctx.lineTo(dr.b.x, dr.b.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+        for (const q of [dr.a, b]) {
+          ctx.beginPath();
+          ctx.arc(q.x, q.y, 5 / st.zoom, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        drawWallLabel(ctx, pw, pal, st.zoom);
+        // step hint
+        const hint = dr.b ? "move to bend · click to place" : "click the end point";
+        ctx.font = `500 ${12 / st.zoom}px -apple-system, system-ui, sans-serif`;
+        ctx.textBaseline = "middle";
+        ctx.globalAlpha = 0.85;
+        ctx.fillText(hint, cursor.current.x + 14 / st.zoom, cursor.current.y + 18 / st.zoom);
+      }
+      ctx.restore();
+    }
+
     // smart-snap guides: visible while drawing walls or dragging a solo item
     const showGuides =
-      (st.tool === "wall" && cursor.current) ||
+      ((st.tool === "wall" || st.tool === "arc") && cursor.current) ||
       (drag.current?.kind === "move" && drag.current.moved);
     if (showGuides && guides.current.length) drawGuides(ctx, guides.current, st.zoom);
 
@@ -1406,6 +1479,11 @@ export default function Editor() {
     ctx.restore();
   }
 
+  // the rAF loop (started once on mount) always calls the latest render closure
+  useEffect(() => {
+    renderRef.current = render;
+  });
+
   const hasFiles = (e: React.DragEvent) => Array.from(e.dataTransfer.types).includes("Files");
 
   return (
@@ -1449,6 +1527,42 @@ export default function Editor() {
       />
     </div>
   );
+}
+
+// ---------- selection ops ----------
+
+function rotateSelection(by: number) {
+  const st = useEditor.getState();
+  const itemIds = new Set(st.selection.filter((s) => s.kind === "item").map((s) => s.id));
+  const stairIds = new Set(st.selection.filter((s) => s.kind === "stairs").map((s) => s.id));
+  if (!itemIds.size && !stairIds.size) return;
+  st.checkpoint();
+  st.mutate((s) => ({
+    ...s,
+    items: s.items.map((x) => (itemIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
+    stairs: s.stairs.map((x) => (stairIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
+  }));
+}
+
+function flipSelection() {
+  const st = useEditor.getState();
+  const sel = st.selection.length === 1 ? st.selection[0] : null;
+  if (sel?.kind !== "opening") return;
+  st.checkpoint();
+  st.mutate((s) => ({
+    ...s,
+    openings: s.openings.map((o) => (o.id === sel.id ? { ...o, flip: !o.flip } : o)),
+  }));
+}
+
+/** Signed bulge for a curved wall a→b that passes through (or toward) point p. */
+function arcBulgeFor(a: Vec, b: Vec, p: Vec): number {
+  const chord = dist(a, b);
+  const n = perp(wallDir({ id: "", a, b, thickness: 0 }));
+  let bulge = dot(sub(p, lerp(a, b, 0.5)), n);
+  bulge = Math.round(bulge / 5) * 5;
+  if (Math.abs(bulge) < 8) return 0;
+  return Math.max(-chord / 2, Math.min(chord / 2, bulge));
 }
 
 function cursorFor(tool?: string): string {

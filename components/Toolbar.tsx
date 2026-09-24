@@ -29,6 +29,18 @@ const MAIN_TOOLS: { tool: Tool; label: string; key?: string; icon: React.ReactNo
     ),
   },
   {
+    tool: "arc",
+    label: "Curved wall",
+    key: "C",
+    icon: (
+      <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="1.8">
+        <path d="M4 19C4 10.7 10.7 4 19 4" strokeLinecap="round" />
+        <circle cx="4" cy="19" r="1.6" fill="currentColor" stroke="none" />
+        <circle cx="19" cy="4" r="1.6" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
+  {
     tool: "room",
     label: "Room walls",
     key: "B",

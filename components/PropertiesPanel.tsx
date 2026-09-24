@@ -782,7 +782,7 @@ function MultiCard({ count }: { count: number }) {
 
 function SceneChip() {
   const scene = useEditor((s) => s.scene);
-  const totalWall = scene.walls.reduce((acc, w) => acc + dist(w.a, w.b), 0);
+  const totalWall = scene.walls.reduce((acc, w) => acc + wallLen(w), 0);
   return (
     <div className="glass-chip absolute right-3 top-[70px] z-10 max-w-[300px] rounded-xl px-3.5 py-2.5 text-[11px] leading-relaxed text-[var(--text-3)]">
       <div className="flex gap-3 text-[var(--text-2)]">
@@ -791,7 +791,7 @@ function SceneChip() {
         <span>{scene.items.length + scene.stairs.length} objects</span>
       </div>
       <div className="pt-0.5">
-        V select · W wall · B room · D door · N window · S stairs · R rotate · G grid · ⌘Z undo
+        V select · W wall · C curve · B room · D door · N window · S stairs · ? all shortcuts
       </div>
     </div>
   );
