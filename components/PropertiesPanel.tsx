@@ -136,15 +136,59 @@ export default function PropertiesPanel() {
               min={10}
               suffix="cm"
               onChange={(nl) => {
-                // extend from endpoint a along the current direction
+                // extend from endpoint a along the current direction; curved walls
+                // scale chord + bulge together so the arc keeps its shape
+                const k = nl / Math.max(1, l);
                 edit((s) => ({
                   ...s,
-                  walls: s.walls.map((x) =>
-                    x.id === w.id ? { ...x, b: add(x.a, scale(norm(sub(x.b, x.a)), nl)) } : x
-                  ),
+                  walls: s.walls.map((x) => {
+                    if (x.id !== w.id) return x;
+                    if (!x.bulge) return { ...x, b: add(x.a, scale(norm(sub(x.b, x.a)), nl)) };
+                    const chord = dist(x.a, x.b) * k;
+                    return { ...x, b: add(x.a, scale(norm(sub(x.b, x.a)), chord)), bulge: x.bulge * k };
+                  }),
                 }));
               }}
             />
+          </Row>
+          <Row label="Curve">
+            <span className="flex items-center gap-1.5">
+              <button
+                onClick={() =>
+                  edit((s) => ({
+                    ...s,
+                    walls: s.walls.map((x) => {
+                      if (x.id !== w.id) return x;
+                      if (x.bulge) {
+                        const nw = { ...x };
+                        delete nw.bulge;
+                        return nw;
+                      }
+                      return { ...x, bulge: Math.round(dist(x.a, x.b) * 0.25) };
+                    }),
+                  }))
+                }
+                disabled={!!w.locked}
+                className="press rounded-md bg-white/8 px-2 py-0.5 text-[11px] text-[var(--text-2)] hover:bg-white/14 hover:text-[var(--text)] disabled:opacity-40"
+                title={w.bulge ? "Make this wall straight again" : "Bend into an arc (or drag the ◆ handle on the canvas)"}
+              >
+                {w.bulge ? "Straighten" : "Bend"}
+              </button>
+              {!!w.bulge && (
+                <NumInput
+                  value={w.bulge}
+                  min={-Math.round(dist(w.a, w.b) / 2)}
+                  max={Math.round(dist(w.a, w.b) / 2)}
+                  suffix="cm"
+                  onChange={(b) =>
+                    edit((s) => ({
+                      ...s,
+                      walls: s.walls.map((x) => (x.id === w.id ? { ...x, bulge: b || undefined } : x)),
+                    }))
+                  }
+                />
+              )}
+            </span>
           </Row>
           <Row label="Thickness">
             <NumInput
@@ -212,8 +256,8 @@ export default function PropertiesPanel() {
             }
           />
           <p className="pt-2 text-[11px] leading-relaxed text-[var(--text-3)]">
-            Drag the round endpoint handles on canvas to extend or reshape. Connected corners move
-            together.
+            Drag the round endpoint handles to extend or reshape; connected corners move together.
+            Drag the ◆ midpoint handle to curve the wall.
           </p>
         </>
       );

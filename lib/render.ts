@@ -8,8 +8,10 @@ import {
   perp,
   scale,
   sub,
-  wallDir,
+  wallArc,
   wallLen,
+  wallPointAt,
+  wallTangentAt,
 } from "./geometry";
 import { birth } from "./anim";
 import { getItemSprite } from "./sprites";
@@ -97,10 +99,21 @@ export function drawGrid(
   drawLines(GRID_MAJOR, pal.gridMajor);
 }
 
-function wallPath(ctx: CanvasRenderingContext2D, w: Wall) {
+export function wallPath(ctx: CanvasRenderingContext2D, w: Wall) {
   ctx.beginPath();
+  const arc = wallArc(w);
+  if (arc) {
+    ctx.arc(arc.c.x, arc.c.y, arc.r, arc.a0, arc.a1, arc.ccw);
+    return;
+  }
   ctx.moveTo(w.a.x, w.a.y);
   ctx.lineTo(w.b.x, w.b.y);
+}
+
+/** Extra cut depth so a straight opening fully clears a curved wall's sag. */
+function curveSag(w: Wall, width: number): number {
+  const arc = wallArc(w);
+  return arc ? (width * width) / (8 * arc.r) + 2 : 0;
 }
 
 export function drawWalls(ctx: CanvasRenderingContext2D, scene: Scene, pal: Palette) {
@@ -146,12 +159,12 @@ export function drawOpenings(ctx: CanvasRenderingContext2D, scene: Scene, pal: P
     const wall = scene.walls.find((w) => w.id === o.wallId);
     if (!wall) continue;
     const c = openingCenter(o, wall);
-    const u = wallDir(wall);
+    const u = wallTangentAt(wall, o.t);
     const n = perp(u);
     const th = wall.thickness;
 
-    // Cut the wall
-    openingRect(ctx, c, u, o.width, th + 2);
+    // Cut the wall (deeper on curved walls so the arc's sag is fully cleared)
+    openingRect(ctx, c, u, o.width, th + 2 + curveSag(wall, o.width) * 2);
     ctx.fillStyle = pal.bg;
     ctx.fill();
 
@@ -795,8 +808,8 @@ export function drawWallLabel(
   pal: Palette,
   zoom: number
 ) {
-  const mid = lerp(w.a, w.b, 0.5);
-  const n = perp(wallDir(w));
+  const mid = wallPointAt(w, 0.5);
+  const n = perp(wallTangentAt(w, 0.5));
   const off = (w.thickness / 2 + 14 / zoom);
   const p = add(mid, scale(n, -off));
   const text = fmtLen(wallLen(w));
@@ -843,6 +856,23 @@ export function drawSelection(
         ctx.lineWidth = 2 / zoom;
         ctx.stroke();
       }
+      // bend handle: a diamond at the wall's midpoint — drag it to curve the wall
+      if (!w.locked) {
+        const m = wallPointAt(w, 0.5);
+        const r = 6 / zoom;
+        ctx.beginPath();
+        ctx.moveTo(m.x, m.y - r);
+        ctx.lineTo(m.x + r, m.y);
+        ctx.lineTo(m.x, m.y + r);
+        ctx.lineTo(m.x - r, m.y);
+        ctx.closePath();
+        ctx.fillStyle = pal.select;
+        ctx.fill();
+        ctx.lineWidth = 2 / zoom;
+        ctx.strokeStyle = pal.bg;
+        ctx.stroke();
+        ctx.strokeStyle = pal.select;
+      }
       drawWallLabel(ctx, w, pal, zoom);
     }
   } else if (sel.kind === "opening") {
@@ -850,7 +880,7 @@ export function drawSelection(
     const w = o && scene.walls.find((x) => x.id === o.wallId);
     if (!o || !w) return;
     const c = openingCenter(o, w);
-    const u = wallDir(w);
+    const u = wallTangentAt(w, o.t);
     ctx.lineWidth = 2 / zoom;
     openingRect(ctx, c, u, o.width + 8 / zoom, w.thickness + 16 / zoom);
     ctx.stroke();
@@ -890,7 +920,7 @@ export function drawSelection(
   const lockedAt = ((): Vec | null => {
     if (sel.kind === "wall") {
       const w = scene.walls.find((x) => x.id === sel.id);
-      return w?.locked ? lerp(w.a, w.b, 0.5) : null;
+      return w?.locked ? wallPointAt(w, 0.5) : null;
     }
     if (sel.kind === "item") {
       const it = scene.items.find((x) => x.id === sel.id);

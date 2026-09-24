@@ -24,6 +24,11 @@ interface EditorState {
   undo: () => void;
   redo: () => void;
   loadScene: (s: Scene) => void;
+  /** Replace the whole scene as one undoable step (import / sample). */
+  importScene: (s: Scene) => void;
+  /** Transient status message shown as a toast. */
+  flash: { text: string; tone: "ok" | "error"; at: number } | null;
+  showFlash: (text: string, tone?: "ok" | "error") => void;
   clearScene: () => void;
   toggleGrid: () => void;
   setActiveHouse: (id: string | null) => void;
@@ -88,6 +93,20 @@ export const useEditor = create<EditorState>((set, get) => ({
     scheduleSave(s);
   },
 
+  importScene: (s) => {
+    set((st) => ({
+      past: [...st.past.slice(-MAX_HISTORY + 1), clone(st.scene)],
+      future: [],
+      scene: s,
+      selection: [],
+      activeHouseId: s.houses.some((h) => h.id === st.activeHouseId) ? st.activeHouseId : null,
+    }));
+    scheduleSave(s);
+  },
+
+  flash: null,
+  showFlash: (text, tone = "ok") => set({ flash: { text, tone, at: Date.now() } }),
+
   clearScene: () => {
     get().checkpoint();
     set({ scene: emptyScene(), selection: [] });
@@ -112,22 +131,28 @@ function scheduleSave(scene: Scene) {
   }, 400);
 }
 
+/** Coerce parsed JSON into a Scene (fills in collections added in later versions). */
+export function normalizeScene(s: unknown): Scene | null {
+  if (!s || typeof s !== "object") return null;
+  const o = s as Partial<Scene>;
+  if (!Array.isArray(o.walls)) return null;
+  const arr = <T,>(x: T[] | undefined): T[] => (Array.isArray(x) ? x : []);
+  return {
+    walls: o.walls,
+    openings: arr(o.openings),
+    stairs: arr(o.stairs),
+    items: arr(o.items),
+    houses: arr(o.houses),
+    rooms: arr(o.rooms),
+    notes: arr(o.notes),
+  };
+}
+
 export function loadSavedScene(): Scene | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
-    const s = JSON.parse(raw);
-    if (s && Array.isArray(s.walls)) {
-      return {
-        walls: s.walls ?? [],
-        openings: s.openings ?? [],
-        stairs: s.stairs ?? [],
-        items: s.items ?? [],
-        houses: s.houses ?? [],
-        rooms: s.rooms ?? [],
-        notes: s.notes ?? [],
-      };
-    }
+    return normalizeScene(JSON.parse(raw));
   } catch {
     // corrupt save — start fresh
   }

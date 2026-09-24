@@ -3,6 +3,7 @@ import HousePanel from "@/components/HousePanel";
 import PropertiesPanel from "@/components/PropertiesPanel";
 import Toolbar from "@/components/Toolbar";
 import TopBar from "@/components/TopBar";
+import Toast from "@/components/Toast";
 
 export default function Home() {
   return (
@@ -15,6 +16,7 @@ export default function Home() {
       <Toolbar />
       <PropertiesPanel />
       <HousePanel />
+      <Toast />
     </div>
   );
 }

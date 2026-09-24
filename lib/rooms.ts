@@ -2,6 +2,7 @@
 // walls, bridge collinear gaps (doorways/passages) so rooms don't leak into
 // hallways, and trace the result into a polygon hugging the walls.
 import { Scene, Vec } from "./types";
+import { isCurved, nearestOnWall, wallPolyline } from "./geometry";
 
 const CELL = 10; // cm per raster cell
 const BRIDGE_GAP = 200; // cm: max collinear gap treated as a virtual boundary
@@ -34,7 +35,7 @@ function rasterize(scene: Scene): Raster | null {
   if (!scene.walls.length) return null;
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const w of scene.walls) {
-    for (const p of [w.a, w.b]) {
+    for (const p of wallPolyline(w, 12)) {
       minX = Math.min(minX, p.x);
       minY = Math.min(minY, p.y);
       maxX = Math.max(maxX, p.x);
@@ -70,12 +71,15 @@ function rasterize(scene: Scene): Raster | null {
     }
   };
 
-  for (const w of scene.walls) stampSeg(w.a, w.b, w.thickness);
+  for (const w of scene.walls) {
+    const pts = wallPolyline(w, 32);
+    for (let i = 1; i < pts.length; i++) stampSeg(pts[i - 1], pts[i], w.thickness);
+  }
 
   // Bridge collinear gaps: passage openings shouldn't dissolve room boundaries.
   const EPS = 8; // cm tolerance for "same line"
-  const horiz = scene.walls.filter((w) => Math.abs(w.a.y - w.b.y) < EPS);
-  const vert = scene.walls.filter((w) => Math.abs(w.a.x - w.b.x) < EPS);
+  const horiz = scene.walls.filter((w) => !isCurved(w) && Math.abs(w.a.y - w.b.y) < EPS);
+  const vert = scene.walls.filter((w) => !isCurved(w) && Math.abs(w.a.x - w.b.x) < EPS);
   // group horizontals by y
   const hGroups = new Map<number, { lo: number; hi: number; y: number }[]>();
   for (const w of horiz) {
@@ -125,8 +129,10 @@ function rasterize(scene: Scene): Raster | null {
   const EPS2 = 6;
   const endpoints: { p: Vec; other: Vec; th: number }[] = [];
   for (const w of scene.walls) {
-    endpoints.push({ p: w.a, other: w.b, th: w.thickness });
-    endpoints.push({ p: w.b, other: w.a, th: w.thickness });
+    // "other" sets the extension direction: the neighbouring polyline point (tangent for arcs)
+    const pl = wallPolyline(w, 32);
+    endpoints.push({ p: w.a, other: pl[1], th: w.thickness });
+    endpoints.push({ p: w.b, other: pl[pl.length - 2], th: w.thickness });
   }
   const isFree = (pt: Vec, self: { p: Vec; other: Vec }) => {
     for (const e of endpoints) {
@@ -135,15 +141,9 @@ function rasterize(scene: Scene): Raster | null {
     }
     for (const w of scene.walls) {
       // lies on another wall's body?
-      const dx = w.b.x - w.a.x;
-      const dy = w.b.y - w.a.y;
-      const l2 = dx * dx + dy * dy;
-      if (l2 < 1) continue;
-      const t = ((pt.x - w.a.x) * dx + (pt.y - w.a.y) * dy) / l2;
+      const { d, t } = nearestOnWall(w, pt);
       if (t <= 0.001 || t >= 0.999) continue;
-      const px = w.a.x + dx * t;
-      const py = w.a.y + dy * t;
-      if (Math.hypot(pt.x - px, pt.y - py) < w.thickness / 2 + 2) return false;
+      if (d < w.thickness / 2 + 2) return false;
     }
     return true;
   };

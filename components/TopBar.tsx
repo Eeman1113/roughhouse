@@ -1,14 +1,13 @@
 "use client";
 
 /* eslint-disable @next/next/no-img-element */
-import { useRef } from "react";
 import { sceneBounds } from "@/lib/geometry";
+import { exportSceneJSON, fitSceneInView, loadSample, pickSceneFile } from "@/lib/io";
 import { PRINT, drawGrid, drawHouseLabels, drawScene } from "@/lib/render";
 import { useEditor } from "@/lib/store";
 import { visibleScene } from "@/lib/houses";
 import { asset } from "@/lib/paths";
 import { goToView } from "@/lib/viewspring";
-import { Scene } from "@/lib/types";
 
 function Btn({
   onClick,
@@ -50,7 +49,6 @@ export default function TopBar() {
   const canRedo = useEditor((s) => s.future.length > 0);
   const gridOn = useEditor((s) => s.gridOn);
   const zoom = useEditor((s) => s.zoom);
-  const fileRef = useRef<HTMLInputElement>(null);
 
   const zoomBy = (f: number) => {
     const st = useEditor.getState();
@@ -62,24 +60,7 @@ export default function TopBar() {
     goToView({ x: cx - wx * nz, y: cy - wy * nz }, nz);
   };
 
-  const fitView = () => {
-    const st = useEditor.getState();
-    const b = sceneBounds(st.scene);
-    if (!b) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const margin = 140;
-    const w = b.max.x - b.min.x || 100;
-    const h = b.max.y - b.min.y || 100;
-    const nz = Math.min(8, Math.max(0.05, Math.min((vw - margin * 2) / w, (vh - margin * 2) / h)));
-    goToView(
-      {
-        x: (vw - w * nz) / 2 - b.min.x * nz,
-        y: (vh - h * nz) / 2 - b.min.y * nz,
-      },
-      nz
-    );
-  };
+  const fitView = () => fitSceneInView();
 
   const exportPNG = () => {
     const scene = visibleScene(useEditor.getState().scene);
@@ -168,41 +149,8 @@ export default function TopBar() {
     a.click();
   };
 
-  const exportJSON = () => {
-    const scene = useEditor.getState().scene;
-    const blob = new Blob([JSON.stringify(scene, null, 2)], { type: "application/json" });
-    const a = document.createElement("a");
-    a.download = "roughhouse-plan.json";
-    a.href = URL.createObjectURL(blob);
-    a.click();
-    URL.revokeObjectURL(a.href);
-  };
-
-  const importJSON = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      try {
-        const s = JSON.parse(String(reader.result)) as Scene;
-        if (!s || !Array.isArray(s.walls)) throw new Error("bad file");
-        useEditor.getState().checkpoint();
-        useEditor.getState().loadScene({
-          walls: s.walls ?? [],
-          openings: s.openings ?? [],
-          stairs: s.stairs ?? [],
-          items: s.items ?? [],
-          houses: s.houses ?? [],
-          rooms: s.rooms ?? [],
-          notes: s.notes ?? [],
-        });
-      } catch {
-        alert("Couldn't read that file — expected a roughhouse JSON export.");
-      }
-    };
-    reader.readAsText(file);
-  };
-
   return (
-    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex -translate-x-1/2 items-center gap-0.5 rounded-2xl px-2 py-1.5">
+    <header className="glass enter-top absolute left-1/2 top-3 z-20 flex -translate-x-1/2 items-center gap-0.5 rounded-2xl py-1.5 pl-2 pr-3">
       <img
         src={asset("/logo-ink.png")}
         alt="roughhouse"
@@ -239,23 +187,19 @@ export default function TopBar() {
       <Btn onClick={exportPNG} title="Export plan as PNG image" tone="tint">
         Export
       </Btn>
-      <Btn onClick={exportJSON} title="Download plan as JSON">
+      <Btn onClick={exportSceneJSON} title="Save plan as a .json file (⌘S)">
         Save
       </Btn>
-      <Btn onClick={() => fileRef.current?.click()} title="Load a JSON plan">
-        Open
+      <Btn onClick={pickSceneFile} title="Import a saved .json plan (⌘O) — or drop the file on the canvas">
+        Import
       </Btn>
-      <input
-        ref={fileRef}
-        type="file"
-        accept="application/json,.json"
-        className="hidden"
-        onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) importJSON(f);
-          e.target.value = "";
-        }}
-      />
+      <Btn
+        onClick={() => void loadSample("corner-house", "the Corner House sample")}
+        title="Load the Corner House showcase plan (undoable)"
+      >
+        Sample
+      </Btn>
+      <Divider />
       <Btn
         onClick={() => {
           if (confirm("Clear the whole plan? (You can undo this.)")) useEditor.getState().clearScene();

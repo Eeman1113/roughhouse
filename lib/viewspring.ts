@@ -28,20 +28,25 @@ export function springViewTo(pan: Vec, zoom: number, response = 0.35) {
   const step = (now: number) => {
     raf = 0;
     if (!target) return;
-    const dt = Math.min(0.05, (now - last) / 1000) || 0.016;
+    const dt = Math.min(0.1, (now - last) / 1000) || 0.016;
     last = now;
 
     const st = useEditor.getState();
     let { x, y } = st.pan;
     let z = st.zoom;
 
-    // semi-implicit Euler, critically damped: x'' = -2ω x' − ω² (x − target)
-    vx += (-2 * omega * vx - omega * omega * (x - target.pan.x)) * dt;
-    vy += (-2 * omega * vy - omega * omega * (y - target.pan.y)) * dt;
-    vz += (-2 * omega * vz - omega * omega * (z - target.zoom)) * dt;
-    x += vx * dt;
-    y += vy * dt;
-    z += vz * dt;
+    // exact closed-form critically damped step: stable for any dt (a heavy frame,
+    // e.g. sprites decoding after an import, can't make it overshoot or diverge)
+    const e = Math.exp(-omega * dt);
+    const stepAxis = (pos: number, vel: number, goal: number): [number, number] => {
+      const d = pos - goal;
+      const k = vel + omega * d;
+      return [goal + (d + k * dt) * e, (vel - omega * k * dt) * e];
+    };
+    [x, vx] = stepAxis(x, vx, target.pan.x);
+    [y, vy] = stepAxis(y, vy, target.pan.y);
+    [z, vz] = stepAxis(z, vz, target.zoom);
+    z = Math.max(0.02, z);
 
     const settled =
       Math.abs(x - target.pan.x) < 0.5 &&

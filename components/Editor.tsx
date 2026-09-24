@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+import { exportSceneJSON, importSceneFile, pickSceneFile } from "@/lib/io";
 import {
   add,
   clampOpeningT,
@@ -8,13 +9,17 @@ import {
   dist,
   fmtLen,
   inRotRect,
+  dot,
   lerp,
+  nearestOnWall,
   nearestWall,
   openingCenter,
-  pointSegDist,
+  perp,
   snapToGrid,
   sub,
   wallDir,
+  wallPointAt,
+  wallTangentAt,
 } from "@/lib/geometry";
 import {
   DARK,
@@ -28,6 +33,7 @@ import {
   getNoteBBox,
   rotateHandlePos,
   scaleHandlePositions,
+  wallPath,
 } from "@/lib/render";
 import { loadSavedScene, useEditor } from "@/lib/store";
 import { cancelViewSpring } from "@/lib/viewspring";
@@ -51,6 +57,7 @@ import {
   Scene,
   Selection,
   Vec,
+  Wall,
   uid,
 } from "@/lib/types";
 
@@ -65,6 +72,7 @@ type Drag =
   | { kind: "scale"; sel: "item" | "stairs"; id: string; center: Vec; rot: number; w0: number; h0: number; d0: number }
   | { kind: "endpoint"; ends: { wallId: string; end: "a" | "b" }[] }
   | { kind: "opening"; id: string }
+  | { kind: "bulge"; id: string }
   | {
       kind: "move";
       startWorld: Vec;
@@ -84,6 +92,7 @@ type Drag =
 
 export default function Editor() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [dropping, setDropping] = useState(false);
   const wrapRef = useRef<HTMLDivElement>(null);
 
   // interaction state lives in refs; a rAF loop redraws every frame
@@ -178,7 +187,7 @@ export default function Editor() {
       const w = scene.walls.find((x) => x.id === o.wallId);
       if (!w) continue;
       const c = openingCenter(o, w);
-      const u = wallDir(w);
+      const u = wallTangentAt(w, o.t);
       const rot = Math.atan2(u.y, u.x);
       if (inRotRect(p, c, rot, o.width, w.thickness + 8, pad)) return { kind: "opening", id: o.id };
     }
@@ -192,7 +201,7 @@ export default function Editor() {
       if (inRotRect(p, s.pos, s.rot, s.width, h, pad)) return { kind: "stairs", id: s.id };
     }
     for (const w of scene.walls) {
-      const { d } = pointSegDist(p, w.a, w.b);
+      const { d } = nearestOnWall(w, p);
       if (d <= w.thickness / 2 + pad) return { kind: "wall", id: w.id };
     }
     for (const r of scene.rooms) {
@@ -388,6 +397,12 @@ export default function Editor() {
               drag.current = { kind: "endpoint", ends: coincidentEndpoints(visibleScene(st.scene), w[end]) };
               return;
             }
+          }
+          // bend handle at the wall's midpoint
+          if (dist(p, wallPointAt(w, 0.5)) <= handleR) {
+            st.checkpoint();
+            drag.current = { kind: "bulge", id: w.id };
+            return;
           }
         }
       }
@@ -657,6 +672,26 @@ export default function Editor() {
       return;
     }
 
+    if (d.kind === "bulge") {
+      st.mutate((s) => ({
+        ...s,
+        walls: s.walls.map((w) => {
+          if (w.id !== d.id) return w;
+          const chord = dist(w.a, w.b);
+          const n = perp(wallDir(w));
+          let b = dot(sub(p, lerp(w.a, w.b, 0.5)), n);
+          b = Math.round(b / 5) * 5;
+          // magnetic straight line; cap at a half-circle
+          if (Math.abs(b) < 10 / st.zoom + 4) b = 0;
+          b = Math.max(-chord / 2, Math.min(chord / 2, b));
+          const nw: Wall = { ...w, bulge: b };
+          if (!b) delete nw.bulge;
+          return nw;
+        }),
+      }));
+      return;
+    }
+
     if (d.kind === "move") {
       if (!d.moved) {
         const screenDist = Math.hypot(e.clientX - d.startScreen.x, e.clientY - d.startScreen.y);
@@ -724,7 +759,7 @@ export default function Editor() {
         if (!o) return s;
         const w = s.walls.find((x) => x.id === o.wallId);
         if (!w) return s;
-        const { t } = pointSegDist(p, w.a, w.b);
+        const { t } = nearestOnWall(w, p);
         const nt = clampOpeningT(w, t, o.width);
         return { ...s, openings: s.openings.map((x) => (x.id === d.id ? { ...x, t: nt } : x)) };
       });
@@ -770,7 +805,7 @@ export default function Editor() {
       const vis = visibleScene(st.scene);
       const found: Selection[] = [];
       for (const w of vis.walls) {
-        if (inside(w.a) || inside(w.b) || inside(lerp(w.a, w.b, 0.5)))
+        if (inside(w.a) || inside(w.b) || inside(wallPointAt(w, 0.5)))
           found.push({ kind: "wall", id: w.id });
       }
       for (const it of vis.items) {
@@ -965,6 +1000,16 @@ export default function Editor() {
         duplicateSelected();
         return;
       }
+      if (mod && key === "o") {
+        e.preventDefault();
+        pickSceneFile();
+        return;
+      }
+      if (mod && key === "s") {
+        e.preventDefault();
+        exportSceneJSON();
+        return;
+      }
       if (mod) return; // don't let ⌘S etc. trigger tool shortcuts
 
       switch (e.key) {
@@ -1102,9 +1147,7 @@ export default function Editor() {
           ctx.strokeStyle = pal.hover;
           ctx.lineWidth = wl.thickness + 8 / st.zoom;
           ctx.lineCap = "square";
-          ctx.beginPath();
-          ctx.moveTo(wl.a.x, wl.a.y);
-          ctx.lineTo(wl.b.x, wl.b.y);
+          wallPath(ctx, wl);
           ctx.stroke();
           ctx.lineCap = "butt";
         }
@@ -1120,9 +1163,7 @@ export default function Editor() {
       ctx.strokeStyle = pal.wall;
       for (const gw of ghosts) {
         ctx.lineWidth = gw.thickness;
-        ctx.beginPath();
-        ctx.moveTo(gw.a.x, gw.a.y);
-        ctx.lineTo(gw.b.x, gw.b.y);
+        wallPath(ctx, gw);
         ctx.stroke();
       }
       ctx.lineCap = "butt";
@@ -1327,8 +1368,8 @@ export default function Editor() {
         if (near) {
           const def = OPENING_DEFAULTS[t as OpeningKind];
           const tt = clampOpeningT(near.wall, near.t, def.width);
-          const c = { x: near.wall.a.x + (near.wall.b.x - near.wall.a.x) * tt, y: near.wall.a.y + (near.wall.b.y - near.wall.a.y) * tt };
-          const u = wallDir(near.wall);
+          const c = wallPointAt(near.wall, tt);
+          const u = wallTangentAt(near.wall, tt);
           ctx.save();
           ctx.globalAlpha = 0.5;
           ctx.strokeStyle = pal.select;
@@ -1365,8 +1406,36 @@ export default function Editor() {
     ctx.restore();
   }
 
+  const hasFiles = (e: React.DragEvent) => Array.from(e.dataTransfer.types).includes("Files");
+
   return (
-    <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
+    <div
+      ref={wrapRef}
+      className="relative h-full w-full overflow-hidden"
+      onDragOver={(e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault();
+        e.dataTransfer.dropEffect = "copy";
+        if (!dropping) setDropping(true);
+      }}
+      onDragLeave={(e) => {
+        if (e.currentTarget.contains(e.relatedTarget as Node)) return;
+        setDropping(false);
+      }}
+      onDrop={(e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault();
+        setDropping(false);
+        const f = Array.from(e.dataTransfer.files).find((x) => /json$/i.test(x.name) || x.type.includes("json"));
+        if (f) void importSceneFile(f);
+        else useEditor.getState().showFlash("Drop a roughhouse save file (.json)", "error");
+      }}
+    >
+      {dropping && (
+        <div className="pointer-events-none absolute inset-3 z-30 flex items-center justify-center rounded-3xl border-2 border-dashed border-[var(--tint)] bg-[var(--tint-soft)]">
+          <div className="glass rounded-2xl px-5 py-3 text-[14px] font-medium">Drop to import plan</div>
+        </div>
+      )}
       <canvas
         ref={canvasRef}
         className="block h-full w-full touch-none"

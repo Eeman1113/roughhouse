@@ -7,6 +7,8 @@ export interface Wall {
   a: Vec;
   b: Vec;
   thickness: number; // cm
+  /** curved wall: signed sagitta in cm (arc bulge from the chord midpoint along the chord normal). */
+  bulge?: number;
   /** wall height override in cm; inherits the floor height (270 default) when unset. */
   height?: number;
   color?: string; // optional tint override
