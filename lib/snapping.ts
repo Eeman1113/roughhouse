@@ -49,10 +49,6 @@ function nearestOnAxis(
   return { v: best, refs: refs.filter((r) => Math.abs(r[axis] - best!) < 0.5) };
 }
 
-function snapToGrid(p: Vec, size: number): Vec {
-  return { x: Math.round(p.x / size) * size, y: Math.round(p.y / size) * size };
-}
-
 /**
  * Smart-snap a wall-drawing point.
  * prev = previous chain point (null for the first click).

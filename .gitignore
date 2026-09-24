@@ -24,6 +24,12 @@
 .DS_Store
 *.pem
 
+# Local AI assistant instructions and state
+AGENTS.md
+CLAUDE.md
+.agents/
+.codex/
+
 # debug
 npm-debug.log*
 yarn-debug.log*

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useRef } from "react";
 import {
   addFloor,
   deleteFloor,
@@ -19,20 +19,17 @@ export default function HousePanel() {
   const rooms = useEditor((s) => s.scene.rooms);
   const activeHouseId = useEditor((s) => s.activeHouseId);
   const house = houses.find((h) => h.id === activeHouseId) ?? null;
-  const [name, setName] = useState(house?.name ?? "");
-
-  useEffect(() => {
-    setName(house?.name ?? "");
-  }, [house?.id, house?.name]);
+  const nameRef = useRef<HTMLInputElement>(null);
 
   if (!houses.length) return null;
 
   const st = () => useEditor.getState();
 
   const commitName = () => {
-    if (!house || !name.trim() || name.trim() === house.name) return;
+    const value = nameRef.current?.value.trim();
+    if (!house || !value || value === house.name) return;
     st().checkpoint();
-    st().mutate((s) => renameHouse(s, house.id, name.trim()));
+    st().mutate((s) => renameHouse(s, house.id, value));
   };
 
   const switchFloor = (floorId: string) => {
@@ -79,8 +76,9 @@ export default function HousePanel() {
         <>
           <div className="mx-1 h-5 w-px bg-white/10" />
           <input
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            ref={nameRef}
+            key={`${house.id}:${house.name}`}
+            defaultValue={house.name}
             onBlur={commitName}
             onKeyDown={(e) => {
               if (e.key === "Enter") (e.target as HTMLInputElement).blur();

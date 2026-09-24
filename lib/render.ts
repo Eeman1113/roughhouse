@@ -14,7 +14,7 @@ import {
 import { birth } from "./anim";
 import { getItemSprite } from "./sprites";
 import { polygonArea, polygonCentroid } from "./rooms";
-import { Item, Note, Opening, Room, Scene, Selection, Stairs, Vec, Wall } from "./types";
+import { Item, Note, Room, Scene, Selection, Stairs, Vec, Wall } from "./types";
 
 export interface Palette {
   bg: string;

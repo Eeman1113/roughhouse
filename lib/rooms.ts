@@ -139,7 +139,7 @@ function rasterize(scene: Scene): Raster | null {
       const dy = w.b.y - w.a.y;
       const l2 = dx * dx + dy * dy;
       if (l2 < 1) continue;
-      let t = ((pt.x - w.a.x) * dx + (pt.y - w.a.y) * dy) / l2;
+      const t = ((pt.x - w.a.x) * dx + (pt.y - w.a.y) * dy) / l2;
       if (t <= 0.001 || t >= 0.999) continue;
       const px = w.a.x + dx * t;
       const py = w.a.y + dy * t;

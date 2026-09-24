@@ -1044,7 +1044,7 @@ export default function Editor() {
       items: s.items.map((x) => (itemIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
       stairs: s.stairs.map((x) => (stairIds.has(x.id) ? { ...x, rot: x.rot + by } : x)),
     }));
-  };
+  }
 
   function flipSelection() {
     const st = useEditor.getState();
@@ -1055,7 +1055,7 @@ export default function Editor() {
       ...s,
       openings: s.openings.map((o) => (o.id === sel.id ? { ...o, flip: !o.flip } : o)),
     }));
-  };
+  }
 
   // ---------- render loop ----------
 
@@ -1352,7 +1352,7 @@ export default function Editor() {
     }
 
     ctx.restore();
-  };
+  }
 
   return (
     <div ref={wrapRef} className="relative h-full w-full overflow-hidden">
