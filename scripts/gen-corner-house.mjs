@@ -13,6 +13,8 @@ import { writeFileSync } from "node:fs";
 const H = "corner-house";
 const GF = "gf";
 const FF = "ff";
+const SF = "sf"; // second: leisure floor
+const TF = "tf"; // top: studio + pool terrace
 const EXT = 23; // 9" brick
 const INT = 12; // 4.5" partition
 const R = { N: 0, E: Math.PI / 2, S: Math.PI, W: -Math.PI / 2 }; // which wall the item's back is against
@@ -300,7 +302,7 @@ const innerArc = arcPts(1150, 900, 500 - EXT / 2 - 4, 0, Math.PI / 2, 12);
 
   scene.stairs.push({
     id: id("s"), kind: "straight", pos: { x: 668, y: 345 }, rot: 0, width: 100, length: 360, steps: 18,
-    linkTo: GF, ...tag(FF),
+    linkTo: SF, ...tag(FF),
   });
 
   // bedroom 3
@@ -362,6 +364,301 @@ const innerArc = arcPts(1150, 900, 500 - EXT / 2 - 4, 0, Math.PI / 2, 12);
   ], C.pink, FF);
 }
 
+// ───────────────────────── second floor: leisure ─────────────────────────
+// Gym, guest suite and laundry stack over the study, guest bedroom and powder
+// room below (shared plumbing risers); the east wing becomes a windowless home
+// theatre and a games room behind the curved glass.
+{
+  FLOOR = SF;
+  const s = shell(SF);
+  const f = { floor: SF };
+  const x600 = wall([600, 150], [600, 1400], f);
+  const y650 = wall([150, 650], [600, 650], f);
+  const y900 = wall([150, 900], [600, 900], f);
+  const x450 = wall([450, 650], [450, 900], f);
+  const lw = wall([750, 150], [750, 400], f);
+  const ls = wall([750, 400], [1000, 400], f);
+  const x1000 = wall([1000, 150], [1000, 1400], f);
+  const t600 = wall([1000, 600], [1650, 600], f);
+  const m900 = wall([600, 900], [1000, 900], f);
+  void lw;
+
+  // doors
+  open(x600, [600, 775], "doorway", 90);
+  open(y650, [525, 650], "door-single", 85, { into: [525, 500], hinge: "b" }); // gym
+  open(x450, [450, 775], "door-single", 75, { into: [300, 775], hinge: "a" }); // bath
+  open(y900, [525, 900], "door-single", 85, { into: [525, 1050], hinge: "b" }); // guest suite
+  open(ls, [875, 400], "door-single", 75, { into: [875, 300], hinge: "b" }); // laundry
+  open(x1000, [1000, 480], "door-single", 90, { into: [1150, 480], hinge: "b" }); // theatre
+  open(x1000, [1000, 760], "doorway", 110); // games room
+  open(m900, [800, 900], "door-double", 150, { into: [800, 1050] }); // music room
+  open(t600, [1550, 600], "door-single", 85, { into: [1550, 500], hinge: "b" }); // games ↔ theatre
+
+  // windows (theatre stays dark: one small vent-height casement only)
+  open(s.north, [375, 150], "window-sliding", 150); // gym
+  open(s.west, [150, 400], "window", 120); // gym
+  open(s.west, [150, 775], "window-casement", 60); // bath
+  open(s.west, [150, 1150], "window", 150); // guest suite
+  open(s.south, [375, 1400], "window-sliding", 150); // guest suite
+  open(s.south, [800, 1400], "window-sliding", 180); // music room
+  open(s.north, [662, 150], "window", 90); // stair
+  open(s.north, [875, 150], "window-casement", 60); // laundry
+  open(s.north, [1600, 150], "window-casement", 50); // theatre vent
+  open(s.east, [1650, 750], "window-double-casement", 150); // games
+  open(s.curve, 0.2, "window", 170);
+  open(s.curve, 0.5, "window", 170);
+  open(s.curve, 0.8, "window", 170);
+
+  scene.stairs.push({
+    id: id("s"), kind: "straight", pos: { x: 668, y: 345 }, rot: 0, width: 100, length: 360, steps: 18,
+    linkTo: TF, ...tag(SF),
+  });
+
+  // gym
+  item("treadmill", 220, 330, 80, 180, R.N);
+  item("exercise-bike", 330, 320, 60, 110, R.N);
+  item("elliptical", 440, 330, 70, 160, R.N);
+  item("dumbbell-rack", 450, 175, 110, 40, R.N);
+  item("floor-mirror", 300, 172, 60, 25, R.N);
+  item("weight-bench", 240, 540, 60, 130, R.E);
+  item("yoga-mat", 520, 520, 60, 180, R.N);
+  item("water-cooler", 575, 620, 35, 35);
+  // bath + lobby
+  item("toilet", 190, 700, 42, 66, R.W);
+  item("single-vanity", 300, 690, 75, 55, R.N);
+  item("corner-shower", 400, 850, 90, 90, R.S);
+  item("towel-cabinet", 525, 700, 50, 35, R.N);
+  // guest suite (in-laws)
+  item("bed-double", 262, 1150, 160, 200, R.W);
+  item("nightstand", 185, 1045, 45, 40, R.W);
+  item("nightstand", 185, 1255, 45, 40, R.W);
+  item("wardrobe", 540, 1150, 120, 60, R.E);
+  item("armchair", 500, 1350, 90, 78, R.S);
+  item("rug-rect", 400, 1150, 200, 140, R.E);
+  item("aram-kursi", 450, 960, 70, 110, R.N);
+  // laundry
+  item("washing-machine", 790, 185, 60, 60, R.N);
+  item("dryer", 855, 185, 60, 60, R.N);
+  item("laundry-sink", 960, 190, 55, 50, R.N);
+  item("iron-board", 850, 300, 110, 35);
+  item("clothes-stand", 870, 372, 150, 60, R.S);
+  item("laundry-basket", 965, 300, 45, 45);
+  // landing
+  item("bench", 700, 880, 140, 40, R.S);
+  item("aquarium", 975, 650, 120, 45, R.E);
+  item("plant", 630, 430, 50, 50);
+  item("ceiling-fan", 800, 650, 120, 120);
+  // music room
+  item("piano-grand", 700, 1020, 150, 160, R.N);
+  item("stool", 700, 1115, 35, 35);
+  item("drum-kit", 900, 1010, 150, 130, R.N);
+  item("keyboard-stand", 700, 1372, 140, 40, R.S);
+  item("loveseat", 890, 1345, 150, 90, R.S);
+  item("rug-oval", 800, 1200, 180, 120);
+  // home theatre
+  item("tv-stand", 1325, 180, 160, 45, R.N);
+  item("sofa-chaise", 1325, 430, 250, 160, R.S);
+  item("recliner", 1100, 440, 90, 95, R.S);
+  item("recliner", 1550, 440, 90, 95, R.S);
+  item("beanbag", 1150, 270, 90, 90);
+  item("beanbag", 1500, 270, 90, 90);
+  item("bar-unit", 1590, 300, 120, 50, R.E);
+  item("mini-fridge", 1620, 480, 50, 50, R.E);
+  item("rug-rect", 1325, 300, 200, 140, R.E);
+  // games room
+  item("pool-table", 1250, 800, 250, 140, R.N);
+  item("foosball", 1200, 1100, 140, 75, R.N);
+  item("dart-board", 1030, 1300, 60, 40, R.W);
+  item("arcade", 1050, 650, 70, 80, R.W);
+  item("bar-unit", 1560, 660, 120, 50, R.N);
+  item("bar-table", 1520, 1000, 60, 60);
+  item("bar-stool", 1470, 1000, 40, 40);
+  item("bar-stool", 1570, 1000, 40, 40);
+  item("beanbag", 1450, 1220, 90, 90);
+  item("beanbag", 1340, 1300, 90, 90);
+  item("chess-table", 1090, 1200, 120, 60, R.W);
+  item("chair", 1050, 1140, 45, 45, R.N);
+  item("chair", 1050, 1260, 45, 45, R.S);
+
+  room("Gym", rect(150, 150, 600, 650), C.green, SF);
+  room("Bath", rect(150, 650, 450, 900), C.teal, SF);
+  room("Lobby", rect(450, 650, 600, 900), C.mint, SF);
+  room("Guest Suite", rect(150, 900, 600, 1400), C.blue, SF);
+  room("Laundry", rect(750, 150, 1000, 400), C.teal, SF);
+  room("Landing", [
+    { x: 612, y: 408 }, { x: 992, y: 408 }, { x: 992, y: 892 }, { x: 612, y: 892 },
+  ], C.mint, SF);
+  room("Music Room", rect(600, 900, 1000, 1400), C.purple, SF);
+  room("Home Theatre", rect(1000, 150, 1650, 600), C.orange, SF);
+  room("Games Room", [
+    { x: 1008, y: 608 },
+    { x: 1638, y: 608 },
+    ...innerArc.map((p) => (p.x > 1638 ? { ...p, x: 1638 } : p)),
+    { x: 1008, y: 1388 },
+  ], C.pink, SF);
+  note("home theatre: no windows, one vent — blackout by design", 1250, 1560, 22, SF);
+}
+
+// ───────────────────────── top floor: studio + pool terrace ─────────────────────────
+// The quiet floor. A library and two offices wrap the west and north; the
+// south-east quadrant — the curved corner, best view on the plot — is left
+// open as a pool terrace. Both offices and the changing room open onto it.
+{
+  FLOOR = TF;
+  const f = { floor: TF };
+  const o = { th: EXT, floor: TF };
+  const para = { th: 15, height: 110, floor: TF }; // terrace parapet
+  const north = wall([150, 150], [1650, 150], o);
+  const west = wall([150, 1400], [150, 150], o);
+  const eastUp = wall([1650, 150], [1650, 600], o);
+  wall([1650, 600], [1650, 900], para);
+  wall([1650, 900], [1150, 1400], { ...para, bulge: -146 });
+  wall([1150, 1400], [1000, 1400], para);
+  const south = wall([1000, 1400], [150, 1400], o);
+  const x1000n = wall([1000, 150], [1000, 600], f);
+  const glassW = wall([1000, 600], [1000, 1400], o); // changing room / meeting → deck
+  const glassS = wall([1000, 600], [1650, 600], o); // office 1 → deck
+  const x600 = wall([600, 150], [600, 1400], f);
+  const y650 = wall([150, 650], [600, 650], f);
+  const y900 = wall([150, 900], [600, 900], f);
+  const x450 = wall([450, 650], [450, 900], f);
+  wall([750, 150], [750, 400], f);
+  const ps = wall([750, 400], [1000, 400], f);
+  const y1060 = wall([600, 1060], [1000, 1060], f);
+
+  // doors
+  open(x600, [600, 775], "doorway", 90);
+  open(y650, [525, 650], "door-single", 85, { into: [525, 500], hinge: "b" }); // library
+  open(x450, [450, 775], "door-single", 75, { into: [300, 775], hinge: "a" }); // bath
+  open(y900, [525, 900], "door-single", 85, { into: [525, 1050], hinge: "b" }); // office 2
+  open(ps, [875, 400], "door-single", 75, { into: [875, 300], hinge: "b" }); // pantry
+  open(x1000n, [1000, 480], "door-single", 90, { into: [1150, 480], hinge: "b" }); // office 1
+  open(y1060, [800, 1060], "doorway", 100); // meeting → changing
+  open(glassW, [1000, 1230], "door-sliding", 180); // changing → deck
+  open(glassS, [1450, 600], "door-sliding", 180); // office 1 → deck
+  open(glassS, [1150, 600], "window", 200);
+  open(glassW, [1000, 800], "window", 200);
+
+  // windows
+  open(north, [470, 150], "window-sliding", 150); // library
+  open(north, [662, 150], "window", 90); // stair
+  open(north, [875, 150], "window-casement", 60); // pantry
+  open(north, [1325, 150], "window-sliding", 180); // office 1
+  open(eastUp, [1650, 375], "window-double-casement", 150); // office 1
+  open(west, [150, 775], "window-casement", 60); // bath
+  open(west, [150, 1150], "window", 150); // office 2
+  open(south, [375, 1400], "window-sliding", 150); // office 2
+  open(south, [800, 1400], "window", 120); // changing
+
+  scene.stairs.push({
+    id: id("s"), kind: "straight", pos: { x: 668, y: 345 }, rot: 0, width: 100, length: 360, steps: 18,
+    linkTo: SF, ...tag(TF),
+  });
+
+  // library: stacks on the west and north walls, reading corner by the window
+  item("bookcase-wide", 172, 330, 160, 35, R.W);
+  item("bookcase-wide", 172, 500, 160, 35, R.W);
+  item("bookcase-wide", 270, 172, 160, 35, R.N);
+  item("bookshelf", 560, 260, 90, 30, R.E);
+  item("bamboo-ladder", 200, 620, 40, 200, R.W);
+  item("armchair", 380, 420, 90, 78, R.S);
+  item("armchair", 490, 420, 90, 78, R.S);
+  item("side-table", 435, 450, 45, 45);
+  item("floor-lamp", 545, 380, 35, 35);
+  item("rug-round", 435, 480, 150, 150);
+  item("study-table", 350, 585, 110, 60, R.S);
+  item("chair", 320, 540, 45, 45, R.N);
+  item("chair", 380, 540, 45, 45, R.N);
+  item("globe", 560, 610, 40, 40);
+  // bath + lobby
+  item("toilet", 190, 700, 42, 66, R.W);
+  item("pedestal-sink", 300, 680, 45, 45, R.N);
+  item("corner-shower", 400, 850, 90, 90, R.S);
+  item("lockers", 525, 878, 120, 45, R.S);
+  // office 2
+  item("l-desk", 245, 995, 160, 160, R.W);
+  item("office-chair", 300, 1050, 60, 60, R.S);
+  item("chair", 400, 1120, 45, 45, R.N);
+  item("chair", 460, 1120, 45, 45, R.N);
+  item("whiteboard", 578, 1150, 120, 40, R.E);
+  item("filing-cabinet", 180, 1370, 45, 60, R.S);
+  item("printer-stand", 570, 1300, 60, 50, R.E);
+  item("bookshelf", 300, 1385, 90, 30, R.S);
+  item("plant", 560, 1370, 50, 50);
+  item("rug-rect", 400, 1250, 200, 140, R.E);
+  // pantry
+  item("counter", 850, 185, 120, 45, R.N);
+  item("kitchen-sink", 960, 190, 80, 52, R.N);
+  item("mini-fridge", 785, 290, 50, 50, R.W);
+  item("microwave", 850, 185, 50, 35, R.N);
+  item("water-purifier", 985, 300, 40, 25, R.E);
+  // meeting
+  item("meeting-table", 800, 620, 160, 160);
+  item("chair", 800, 520, 45, 45, R.N);
+  item("chair", 800, 720, 45, 45, R.S);
+  item("chair", 700, 620, 45, 45, R.W);
+  item("chair", 900, 620, 45, 45, R.E);
+  item("whiteboard", 978, 560, 120, 40, R.E);
+  item("lounge-set", 800, 930, 200, 100, R.S);
+  item("photocopier", 640, 1010, 70, 60, R.W);
+  item("plant", 960, 1010, 50, 50);
+  // changing room
+  item("towel-cabinet", 630, 1100, 50, 35, R.W);
+  item("bench", 640, 1230, 140, 40, R.W);
+  item("lockers", 800, 1375, 120, 45, R.S);
+  item("entrance-shoe-rack", 650, 1370, 90, 35, R.S);
+  item("laundry-basket", 960, 1100, 45, 45);
+  // office 1: the corner office
+  item("standing-desk", 1500, 330, 140, 70, R.N);
+  item("office-chair", 1500, 405, 60, 60, R.S);
+  item("chair", 1450, 255, 45, 45, R.N);
+  item("chair", 1550, 255, 45, 45, R.N);
+  item("bookcase-wide", 1200, 172, 160, 35, R.N);
+  item("whiteboard", 1022, 300, 120, 40, R.W);
+  item("loveseat", 1100, 545, 150, 90, R.S);
+  item("coffee-table-round", 1100, 440, 80, 80);
+  item("filing-cabinet", 1620, 560, 45, 60, R.E);
+  item("printer-stand", 1620, 470, 60, 50, R.E);
+  item("monstera", 1040, 185, 70, 70);
+  item("plant", 1620, 180, 50, 50);
+  // pool terrace
+  item("pool-infinity", 1290, 790, 480, 260, R.N);
+  item("shower", 1050, 660, 90, 90, R.N);
+  item("sun-lounger", 1080, 1150, 60, 190, R.N);
+  item("sun-lounger", 1160, 1150, 60, 190, R.N);
+  item("sun-lounger", 1240, 1150, 60, 190, R.N);
+  item("umbrella-table", 1420, 1080, 180, 180);
+  item("fire-pit", 1350, 1250, 90, 90);
+  item("mudha", 1300, 1320, 40, 40);
+  item("mudha", 1400, 1300, 40, 40);
+  item("bbq-grill", 1040, 1350, 70, 50, R.W);
+  item("bar-table", 1110, 1330, 60, 60);
+  item("bar-stool", 1110, 1280, 40, 40);
+  item("bar-stool", 1160, 1340, 40, 40);
+  item("planter-box", 1075, 1382, 100, 35, R.S);
+  item("palm-plant", 1030, 960, 60, 60);
+  item("planter-box", 1600, 640, 100, 35, R.N);
+
+  room("Library", rect(150, 150, 600, 650), C.purple, TF);
+  room("Bath", rect(150, 650, 450, 900), C.teal, TF);
+  room("Lobby", rect(450, 650, 600, 900), C.mint, TF);
+  room("Office 2", rect(150, 900, 600, 1400), C.blue, TF);
+  room("Pantry", rect(750, 150, 1000, 400), C.orange, TF);
+  room("Meeting", [
+    { x: 612, y: 408 }, { x: 992, y: 408 }, { x: 992, y: 1052 }, { x: 612, y: 1052 },
+  ], C.yellow, TF);
+  room("Changing", rect(600, 1060, 1000, 1400), C.mint, TF);
+  room("Office 1", rect(1000, 150, 1650, 600), C.blue, TF);
+  room("Pool Terrace", [
+    { x: 1012, y: 612 },
+    { x: 1642, y: 612 },
+    ...innerArc.map((p) => (p.x > 1642 ? { ...p, x: 1642 } : p)),
+    { x: 1012, y: 1392 },
+  ], C.teal, TF);
+  note("infinity edge spills toward the street corner", 1250, 1560, 22, TF);
+  note("pool sits over the games room: 60 cm structural slab, 110 cm parapet", 1250, 1600, 22, TF);
+}
+
 // ───────────────────────── garden & street ─────────────────────────
 site("tree-large", 1720, 1520, 300, 300); // shade tree filling the street corner
 site("garden-bench", 1340, 1640, 140, 50, R.S);
@@ -382,7 +679,7 @@ site("sintex-tank", 70, 70, 120, 120);
 site("clothesline", 1000, 75, 250, 30);
 
 note("Corner House", 0, -190, 64);
-note("20 × 18 m corner plot · 2 floors · 3 bed", 0, -120, 30);
+note("20 × 18 m corner plot · 4 floors · 4 bed · rooftop pool", 0, -120, 30);
 note("MAIN ROAD", 650, 1930, 40);
 note("CROSS ROAD", 2060, 650, 40);
 note("the street corner gets a 5 m curved splay", 1560, 1900, 24);
@@ -395,6 +692,8 @@ scene.houses.push({
   floors: [
     { id: GF, name: "Ground", height: 300 },
     { id: FF, name: "First", height: 285 },
+    { id: SF, name: "Second", height: 285 },
+    { id: TF, name: "Top", height: 300 },
   ],
   activeFloorId: GF,
 });

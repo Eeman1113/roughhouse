@@ -406,6 +406,17 @@ export const SHEETS = [
   },
 ];
 
+// Programmatically drawn sprites (scripts/draw-pools.py): catalog entries only, no sheet to slice.
+export const DRAWN = [
+  { id: "pool-infinity", label: "Infinity pool", cat: "Outdoor", w: 480, h: 260 },
+  { id: "pool-lap", label: "Lap pool", cat: "Outdoor", w: 250, h: 800 },
+  { id: "pool-plunge", label: "Plunge pool", cat: "Outdoor", w: 250, h: 200 },
+  { id: "pool-l", label: "Pool (L-shaped)", cat: "Outdoor", w: 500, h: 400 },
+  { id: "pool-oval", label: "Pool (oval)", cat: "Outdoor", w: 450, h: 300 },
+  { id: "pool-kidney", label: "Pool (kidney)", cat: "Outdoor", w: 450, h: 320 },
+  { id: "kids-pool", label: "Kids' pool", cat: "Outdoor", w: 180, h: 180 },
+];
+
 // Re-generated replacement sprites: sliced like SHEETS but NOT added to the catalog
 // (their ids already exist there).
 export const FIX_SHEETS = [

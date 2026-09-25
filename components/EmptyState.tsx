@@ -31,7 +31,7 @@ export default function EmptyState() {
           />
           <Action
             title="Open the sample house"
-            hint="A furnished two-floor corner house"
+            hint="Four furnished floors and a rooftop pool"
             onClick={() => void loadSample("corner-house", "the Corner House sample")}
           />
           <Action title="Import a saved plan" hint="Or drop a .json file anywhere" kbd="⌘O" onClick={pickSceneFile} />

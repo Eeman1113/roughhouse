@@ -1,6 +1,6 @@
 // Writes lib/catalog.json from catalog-def.mjs + the original hand-mapped sprites.
 import { writeFile } from "fs/promises";
-import { SHEETS } from "./catalog-def.mjs";
+import { DRAWN, SHEETS } from "./catalog-def.mjs";
 
 const LEGACY = [
   { id: "bed-single", label: "Bed (single)", cat: "Beds", w: 90, h: 200 },
@@ -26,6 +26,7 @@ const LEGACY = [
 const items = [
   ...LEGACY,
   ...SHEETS.flatMap((s) => s.items.map(({ id, label, cat, w, h }) => ({ id, label, cat, w, h }))),
+  ...DRAWN,
 ];
 
 const seen = new Set();
